@@ -1,0 +1,132 @@
+#!/bin/sh
+
+# Include the configuration
+source etc/rc.conf
+
+# What are we doing:
+command=$1 ; shift
+case $command in
+	bootstrap)	# Initial bootstrap stage
+		bootstrap $*
+		;;
+	goto|switch)	# Go To Runlevel
+		goto $*
+		;;
+	service)	# Call a service
+		serviceName=$1 ; shift
+		"$INITD/$serviceName" $*
+		;;
+	add)		# Add services to said runlevel
+		runlevel=$1 ; shift
+		action=$1 ; shift
+
+		# Create the runlevel if it does not exist already.
+		[ -d "$RUNLEVELDIR/$runlevel/$action" ] || \
+			mkdir -p "$RUNLEVELDIR/$runlevel/$action" \
+			> /dev/null 2>&1
+		
+		# Add each service
+		for service in $*; do
+			# Check the service/action isn't already added
+			[ -x "$RUNLEVELDIR/$runlevel/$action" ] || \
+				ln -s "$INITD/$service" \
+				"$RUNLEVELDIR/$runlevel/$action"
+		done
+		;;
+	rm|delete)	# Remove services from said runlevel
+		runlevel=$1 ; shift
+		# We will make a special case here... if $runlevel=ALL, then we
+		# look for it in ALL runlevels
+		if [ "$runlevel" = "ALL" ]; then
+			for runlevel in $RUNLEVELDIR/*; do
+				$0 rm $runlevel $*
+			done
+		else
+		# Okay... it's just the one runlevel.
+			for action in "$RUNLEVELDIR/$runlevel"; do
+				for service in $*; do
+					rm -f "$RUNLEVELDIR/$runlevel/$action/$service" 2>&1 > /dev/null
+				done
+			done
+		fi
+		;;
+	ls|list)	# List runlevels/actions/services
+		runlevel=$1 ; shift
+		if [ -z "$runlevel" ]; then
+			ls -1 "$RUNLEVELDIR"
+		else
+			for action in $RUNLEVELDIR/$runlevel/*; do
+				echo "Services to $action"
+				for service in "$RUNLEVELDIR/$runlevel/$action"; do
+					$0 service $service status
+				done
+			done
+		fi
+		;;
+	mv|rename)	# Rename a runlevel
+		oldrunlevel=$1 ; shift
+		newrunlevel=$1 ; shift
+		[ -d "$RUNLEVELDIR/$oldrunlevel" ] || ( echo "Runlevel $oldrunlevel does not exist."; exit 1 )
+		[ -d "$RUNLEVELDIR/$newrunlevel" ] && ( echo "Runlevel $newrunlevel already exists."; exit 1 )
+
+		echo -n "Renaming $oldrunlevel to $newrunlevel..."
+		mv "$RUNLEVELDIR/$oldrunlevel" "$RUNLEVELDIR/$newrunlevel" && echo "...done"
+		;;
+	cp|copy|duplicate)	# Duplicate a runlevel
+		oldrunlevel=$1 ; shift
+		newrunlevel=$1 ; shift
+		[ -d "$runleveldir/$oldrunlevel" ] || ( echo "runlevel $oldrunlevel does not exist."; exit 1 )
+		[ -d "$runleveldir/$newrunlevel" ] && ( echo "runlevel $newrunlevel already exists."; exit 1 )
+
+		echo -n "Copying $oldrunlevel to $newrunlevel..."
+		cp -a "$runleveldir/$oldrunlevel" "$runleveldir/$newrunlevel" && echo "...done"
+		;;
+	ln|alias)	# Alias a runlevel
+  		oldrunlevel=$1 ; shift
+		newrunlevel=$1 ; shift
+		[ -d "$runleveldir/$oldrunlevel" ] || ( echo "runlevel $oldrunlevel does not exist."; exit 1 )
+		[ -d "$runleveldir/$newrunlevel" ] && ( echo "runlevel $newrunlevel already exists."; exit 1 )
+
+		echo -n "Aliasing $oldrunlevel to $newrunlevel..."
+		ln -s "$runleveldir/$oldrunlevel" "$runleveldir/$newrunlevel" && echo "...done"
+		;;
+	*)		# Unrecognised command
+		cat <<EOF
+Usage:
+$0 <command> [<arguments...>]
+where command is one of:
+	bootstrap (no arguments)
+		Bootstrap the system.  Only used in the first stage of booting.
+		
+	(goto|switch) <runlevel>
+		Switch to the specified runlevel
+		
+	service <serviceName> <arguments>
+		Call $INITD/<serviceName> <arguments>
+		(This is here for convenience)
+			
+	add <runlevel> <action> <service1> [<service2> ... <serviceN>]
+		Add a service to the specified runlevel, performing the said action
+		(rm|delete) <runlevel> <service1> [<service2> ... <serviceN>]
+		Delete a list of services from the specified runlevel (or "ALL" runlevels)
+	
+	(ls|list) [<runlevel>]
+		If <runlevel> is specified, list the services in that runlevel along with the status
+		of each service.
+			Otherwise, just list the runlevels available.
+
+	(mv|rename) <old> <new>
+		Rename <old> runlevel to <new>
+
+	(cp|copy|duplicate) <old> <new>
+		Make a copy of <old> called <new>
+
+	(ln|alias) <old> <new>
+		Make <new> an alias for <old>
+		
+	Anything else -- shows this help message.
+
+ERROR: Command "$command" not recognised. -- Exiting here.
+EOF
+		exit 1;
+esac
