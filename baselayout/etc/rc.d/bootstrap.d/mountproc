@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$1" = "start" ]; then
+	echo "Mounting proc file system..."
+	/bin/mount -n /proc
+elif [ "$1" = "stop" ]; then
+	echo "Unmounting proc file system..."
+	/bin/umount /proc
+fi

@@ -1,0 +1,77 @@
+#!/bin/bash
+
+case "$1" in
+	start)
+		echo "Remounting root file system in read-write mode..."
+		mount -n -o remount,rw /
+
+		echo "Looking for Atomic Linux CD..."
+		echo
+		for dev in /dev/cdroms/* /dev/sr* /dev/scd* /dev/hd{a,b,c,d,e,f,g,h,i,j}; do
+			echo -e "\e[A\e[2K\t...Trying $dev..."
+			if ( mount $dev /cd -t iso9660 >& /dev/null ); then
+				echo -e "\e[A\e[2K\t...$dev mounted, looking for /usr image..."
+				sleep 1
+				if [ -f /cd/boot/usr.sqfs ]; then
+					echo -e "\e[A\e[2K\e[A\e[2K Atomic Linux CD located in $dev.  Continuing..."
+					export ATOMIC_CD=$dev
+					break
+				else
+					echo -e "\e[A\e[2K\t...$dev isn't the right CD"
+					umount /cd
+				fi
+				sleep 1
+			fi
+		done
+
+		if [ "$ATOMIC_CD" = "" ]; then
+			echo "\e[A\e[2KNo Atomic Linux Disc found!"
+			cat <<EOF
+-----------------------------------------------------------
+		W H O A  T H E R E ! ! !
+	
+	The Atomic Linux CD was not found in any of
+	the CD-ROM drives.  You will be dropped to a
+	shell so that you can manually locate the disc.
+
+	Mount it on /cd, then exit the shell to resume
+	the boot process.
+
+-----------------------------------------------------------
+EOF
+			/bin/sh
+			echo "Okay, I'll assume the problem is fixed."
+		fi
+
+		echo "Mounting /usr image"
+		mount /cd/boot/usr.sqfs /usr -o loop
+
+		echo "Recording existing mounts in /etc/mtab..."
+#		> /etc/mtab
+		mount -f / && mount -f /proc
+		# add /dev above if you use devfs
+
+		# The following mount command will mount all file systems. If you
+		# have other (network based) file system that should not be or
+		# cannot be mounted at this time, add them to the NO_FS variable
+		# below. All file systems that are added to the variable in the
+		# form of no<filesystem> will be skipped.
+
+		NO_FS="nonfs,nosmbfs,noproc"
+		echo "Mounting remaining file systems..."
+		mount -a -t $NO_FS
+		;;
+
+	stop)
+		echo "Unmounting all other currently mounted file systems..."
+		umount /usr
+		umount /cd
+		umount -a -r
+		umount -f /
+		;;
+
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+		;;
+esac

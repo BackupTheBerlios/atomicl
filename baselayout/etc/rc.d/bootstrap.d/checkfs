@@ -1,0 +1,73 @@
+#!/bin/bash
+
+if [ -f /fastboot ]
+then
+	echo "Fast boot requested, will not perform file system checks"
+	exit 0
+fi
+
+echo "Mounting root file system in read-only mode..."
+/bin/mount -n -o remount,ro /
+
+if [ $? != 0 ]
+then
+	echo
+	echo "Cannot check root file system because it could not"
+	echo "be /bin/mounted in read-only mode."
+	echo
+	echo -n "When you press enter, this system will be halted."
+	echo
+	echo "Press enter to continue..."
+	read
+	echo "gonna run: $rc_base/init.d/halt"
+	/etc/rc.d/rc.halt
+fi
+
+if [ -f /forcefsck ]
+then
+	echo "/forcefsck exists, forcing file system check"
+	options="-f"
+else
+	options=""
+fi
+
+echo "Checking file systems..."
+#Note: -a option used to be -p; but this fails e.g. on fsck.minix
+/sbin/fsck $options -a -A -C -T
+error_value=$?
+
+if [ "$error_value" = 1 ]
+then
+	echo "File system errors were found and have been corrected."
+	echo "You may want to double-check that everything was fixed"
+	echo -n "properly"
+fi
+
+if [ "$error_value" = 2 ]
+then
+	echo "File system errors were found and have been corrected, but"
+	echo "the nature of the errors require this system to be rebooted."
+	echo
+	echo -n "When you press enter, this system will be rebooted."
+	echo
+	echo "Please press enter to continue..."
+	read
+	/etc/rc.d/rc.reboot
+fi
+
+if [ "$error_value" -gt 2 -a "$error_value" -lt 16 ]
+then
+	echo "File system errors were encountered that couldn't be"
+	echo "fixed automatically. This system cannot continue to boot"
+	echo "and will therefore be halted until those errors fixed manually"
+	echo "by a System Administrator."
+	echo
+	echo -n "When you press enter, this system will be halted."
+	echo
+	echo "Press enter to continue..."
+	read
+	/etc/rc.d/rc.halt
+fi
+
+# End $rc_base/init.d/checkfs
+

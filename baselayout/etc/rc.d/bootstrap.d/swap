@@ -1,0 +1,29 @@
+#!/bin/bash
+case "$1" in
+	start)
+		echo "Activating all swap files/partitions..."
+		/sbin/swapon -a
+		;;
+
+	stop)
+		echo "Deactivating all swap files/partitions..."
+		/sbin/swapoff -a
+		;;
+
+	restart)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+
+	status)
+		echo "Retrieving swap status..."
+		echo
+		/sbin/swapon -s
+		;;
+
+	*)
+		echo "Usage: $0 {start|stop|restart|status}"
+		exit 1
+		;;
+esac

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+case "$1" in
+	start)
+		echo "Updating Module Dependancies..."
+		depmod -a
+		moddir=/lib/modules/`uname -r`;
+		echo "Loading Drivers..."
+		echo
+		for driver in cdrom ide_core scsi_mod ide_scsi ide_cd sr_mod; do
+			echo -e "\e[A\e[2K\tLoading $driver"
+			modprobe $driver
+			sleep 1
+		done
+
+		for mod in `find $moddir/kernel/drivers/ide/pci
+				 $moddir/kernel/drivers/scsi -name \*.ko`; do
+			driver=`basename $mod .ko`
+			echo -e "\e[A\e[2K\tLoading $driver"
+			modprobe `basename $driver`
+			sleep 1
+		done
+			
+		;;
+
+	stop)
+		;;
+
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+		;;
+esac
