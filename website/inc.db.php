@@ -1,4 +1,4 @@
 <?php
-	$dbCon = mysql_connect("localhost", "atomix", "h4x0r");
-	mysql_select_db("atomix");
+	$dbCon = mysql_connect("localhost", "atomiclinux", "67tyfgcv");
+	mysql_select_db("atomiclinux");
 ?>
