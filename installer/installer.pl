@@ -16,6 +16,8 @@ foreach $ide (@ide) {
 		if($temp =~ /^ide-disk/) {
 			# print "$_ is a hard drive\n";
 			push @drives, $_;
+		} elsif ($temp =~ /^ide-cdrom/) {
+			push @cdroms, $_;
 		}
 		# else {
 		# 	print "$_ is not a hard drive\n";
@@ -77,32 +79,32 @@ elsif($prog == 3)
 open PARTITIONS, "/proc/partitions" or die "Problem with proc filesystem ($!)";
 $header = <PARTITIONS>;
 #print "Header:$header\n";
-@devices = ();
+@parts = ();
 while(<PARTITIONS>) {
 	#print "$_\n";
 	if(!/^\s+\d\s+0/ && !/^\s*$/) {
 		/\s+(\w+)$/;
 		#print "$1\n";
-		push @devices, $1
+		push @parts, $1
 	}
 }
 @mPoints = ("/etc","/boot","/home","/lib","/tmp","/usr","/var");
 
 # Choose mount locations
 #print "Where do you want to mount the root directory?\n";
-$choice = menu("Where do you want to mount the root directory?",@devices);
-print "You chose @devices[$choice]\n";
-$root = @devices[$choice];
-@devices = (@devices[0..($choice-1)],@devices[$choice+1..$#devices]);
+$choice = menu("Where do you want to mount the root directory?",@parts);
+print "You chose @parts[$choice]\n";
+$root = @parts[$choice];
+@parts = (@parts[0..($choice-1)],@parts[$choice+1..$#parts]);
 %fs = ("/",$root);
 
-$choice = menu("Where do you want to mount the swap file?",@devices);
-$swap = @devices[$choice];
-print "You chose @devices[$choice]\n";
-@devices = (@devices[0..($choice-1)],@devices[$choice+1..$#devices]);
+$choice = menu("Where do you want to mount the swap file?",@parts);
+$swap = @parts[$choice];
+print "You chose @parts[$choice]\n";
+@parts = (@parts[0..($choice-1)],@parts[$choice+1..$#parts]);
 
 $finished = 0;
-if($#devices < 0) {
+if($#parts < 0) {
 	$finished = 1;
 }
 while(!$finished) {
@@ -120,11 +122,11 @@ while(!$finished) {
 	}
 	if($choice > 0 && $choice <= $i) {
 		# Choose where you want to mount the folder
-		$part = menu("Where do you want to mount @mPoints[$choice-1]",@devices);
-		$fs{@mPoints[$choice-1]} = @devices[$part];
-		@devices = (@devices[0..$part-1],@devices[$part+1..$#devices]);
+		$part = menu("Where do you want to mount @mPoints[$choice-1]",@parts);
+		$fs{@mPoints[$choice-1]} = @parts[$part];
+		@parts = (@parts[0..$part-1],@parts[$part+1..$#parts]);
 		@mPoints = (@mPoints[0..$choice-2],@mPoints[$choice..$#mPoints]);
-		if($#devices < 0 || $#mPoints < 0) {
+		if($#parts < 0 || $#mPoints < 0) {
 			$finished=1;
 		}
 	}
@@ -133,15 +135,20 @@ while(!$finished) {
 # Format partitions as required
 @fileSystems = ("ext2", "ext3", "xfs","Reiser");
 $choice = menu("Which file system do you wish to use?",@fileSystems);
+$drivetype;
 foreach(%fs) {
 	if(@fileSystems[$choice] eq "ext2") {
 		#`mkfs.ext2 $fs{$_}`;
+		$drivetype = "ext2";
 	} elsif(@fileSystems[$choice] eq "ext3") {
 		#`mkfs.ext3 $fs{$_}`;
+		$drivetype = "ext3";
 	} elsif(@fileSystems[$choice] eq "xfs") {
 		#`mkfs.xfs $fs{$_}`;
+		$drivetype = "xfs";
 	} else {
 		#`mkreiserfs $fs{$_}`;
+		$drivetype = "reiser";
 	}
 }
 #`mkswap $swap`
@@ -153,26 +160,15 @@ foreach(%fs) {
 chdir "/mnt/root";
 foreach $key (sort keys %fs) {
 	if($key ne "/") {
-		`mount /dev/$fs{$key} /mnt$key` 
+		`mount /dev/$fs{$key} /mnt/root$key` 
 	}
 }
 
 # Extract base system tarball into new system
-
+# $tarfile = <Enter tar file here>
+# `tar -xjf $tarfile -C /mnt/root
 
 # Setup the root password
-$done = 0;
-until $done {
-	print "Enter your root password:";
-	$pw1 = chomp <STDIN>;
-	print "Enter the password again:";
-	$pw2 = chomp <STDIN>;
-	if($pw1 eq $pw2){
-		$done = 1;
-		#$pw = `crypt $
-		#`chroot /mnt/root usermod -
-	}
-}
 #`chroot /mnt/root passwd root`; 
 
 # Add extra users as required. The loop should be:
@@ -180,33 +176,51 @@ until $done {
 # create home directory
 # set password for user
 $done = 0;
-until $done {
+until ($done) {
 	$choice = 0;
-	while($choice < 1 && $choice > 2) {
+	while($choice < 1 || $choice > 2) {
 		print "Do you want to add another user?\n";
 		print "1 - Yes\n";
 		print "2 - No\n";
 		print "(1 or 2):";
 		$choice = <STDIN>;
 	}
-	if($choice == 2)
-		$done = true;
-	else {
+	if($choice == 2) {
+		$done = 1;
+	} else {
 		print "Enter user name:";
 		$username = <STDIN>;
-		# `useradd 
+		# `groupadd $username`;
+		# `useradd  -g $username -k -m -s /bin/bash`;
+		# `chroot /mnt/root passwd $username`; 
 	}
 }
 
-# Add Users to appropriate groups
-
 # Setup fstab
+# Assume proc, etc. is already added
+open FSTAB, ">>/mnt/root/etc/fstab";
+print FSTAB "/dev/$swap\tswap\tswap\tdefaults\t0\t0\n";
+foreach $key (sort keys %fs) {
+	if($key ne "/") {
+		print FSTAB "/dev/$fs{$key}\t$key\t$drivetype\tdefaults\t0\t0\n";
+	} else {
+		print FSTAB "/dev/$fs{$key}\t$key\t$drivetype\tdefaults\t1\t1\n";
+	}
+}
+foreach (@cdroms) {
+	print FSTAB "/dev/$_\t/mnt/$_\tiso9660\tnoauto,user,ro\t0\t0\n";
+}
+close FSTAB;
 
 # Setup lilo boot loader
+# `liloconfig`;
 
 # Setup network
 
 # Setup bootscripts
+# $bsdir = <Enter boot script directory on the cd>
+# $bstarget = <Enter boot script directory on destination>
+# `cp $bsdir/* $bstarget`;
 
 0;
 
