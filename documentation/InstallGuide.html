@@ -5,7 +5,7 @@
 	<TITLE>Atomic Linux Install Guide-0.1.0-rev1</TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.0.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20031004;22351400">
-	<META NAME="CHANGED" CONTENT="16010101;0">
+	<META NAME="CHANGED" CONTENT="20031012;23144900">
 	<META NAME="ProgId" CONTENT="Word.Document">
 	<META NAME="Originator" CONTENT="Microsoft Word 10">
 	<STYLE>
@@ -30,20 +30,18 @@
 		</P>
 	</OL>
 </OL>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">Welcome
-to Atomic Linux! We do hope you enjoy your stay.</P>
-<P CLASS="msonormal" STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">Our
-vision at Atomix </SPAN>in a few words:</P>
-<P CLASS="msonormal" STYLE="margin-left: 1.91cm">Secure, <BR>Efficient,
-<BR>Cutting-edge. 
+<P LANG="en-US" STYLE="margin-left: 1.27cm">Welcome to Atomic Linux!
+We do hope you enjoy your stay.</P>
+<P STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">Our vision at
+Atomix </SPAN>in a few words:</P>
+<P STYLE="margin-left: 1.91cm">Secure, <BR>Efficient, <BR>Cutting-edge.
 </P>
-<P CLASS="msonormal" STYLE="margin-left: 1.27cm">We aim to provide a
-unique Linux experience by tayloring an interface for the individual
-user, be they a Linux newcomer or Linux God. The Atomic Linux
-operating system is designed to deliver this through a tweakable,
-minimalist approach to emerging technologies developed for the
-GNU/linux platform.</P>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">&nbsp;</P>
+<P STYLE="margin-left: 1.27cm">We aim to provide a unique Linux
+experience by tayloring an interface for the individual user, be they
+a Linux newcomer or Linux God. The Atomic Linux operating system is
+designed to deliver this through a tweakable, minimalist approach to
+emerging technologies developed for the GNU/linux platform.</P>
+<P LANG="en-US" STYLE="margin-left: 1.27cm">&nbsp;</P>
 <OL>
 	<OL TYPE=a START=2>
 		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">State the process
@@ -51,38 +49,37 @@ GNU/linux platform.</P>
 		</P>
 	</OL>
 </OL>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">The
-installation process involves four initial stages for building the
-base system. We firstly need to partition and format and media that
-we intend to install the operating system on. Generally this is done
-on a Hard drive of varying description however is limited to being at
-least <FONT COLOR="#008000">&lt;Distro size&gt;</FONT>GB and we
-recommend having <FONT COLOR="#008000">&lt;Recommend Size&gt;</FONT>GB
-for installing other applications not currently supported by our
-distro. Once the hard drive is partitioned and the file system has
-been formatted we can move onto unpacking the base system. This is
-done by mounting the media and transfer files to it. The system then
-needs to have users and password defined so as to secure it from
-unintended usage. Finally we will be amending some simple settings to
-ensure that when the system reboots network interfaces, file systems
-and applications will function correctly.</P>
+<P LANG="en-US" STYLE="margin-left: 1.27cm">The installation process
+involves four initial stages for building the base system. We firstly
+need to partition and format and media that we intend to install the
+operating system on. Generally this is done on a Hard drive of
+varying description however is limited to being at least <FONT COLOR="#008000">&lt;Distro
+size&gt;</FONT>GB and we recommend having <FONT COLOR="#008000">&lt;Recommend
+Size&gt;</FONT>GB for installing other applications not currently
+supported by our distro. Once the hard drive is partitioned and the
+file system has been formatted we can move onto unpacking the base
+system. This is done by mounting the media and transfer files to it.
+The system then needs to have users and password defined so as to
+secure it from unintended usage. Finally we will be amending some
+simple settings to ensure that when the system reboots network
+interfaces, file systems and applications will function correctly.</P>
 <OL>
 	<OL TYPE=a START=3>
 		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Get on with it</FONT></SPAN>
 				</P>
 	</OL>
 </OL>
-<P CLASS="msonormal" STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">&ldquo;That
-sounds easy enough,&rdquo; I hear you say. You in the back there, you
-look concerned. Don&rsquo;t worry! It&rsquo;s not rocket science. We
-hear at Atomix are here to help you through the process. There is
-plenty of help out there for you to access. If you cant find it in
-this installation guide the website FAQ&rsquo;s are the first stop on
+<P STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">&ldquo;That sounds
+easy enough,&rdquo; I hear you say. You in the back there, you look
+concerned. Don&rsquo;t worry! It&rsquo;s not rocket science. We hear
+at Atomix are here to help you through the process. There is plenty
+of help out there for you to access. If you cant find it in this
+installation guide the website FAQ&rsquo;s are the first stop on
 you&rsquo;re journey. Next stop would be the <A HREF="http://www.longlandclan.hopto.org/phpBB2/viewforum.php?f=23">Atomic
 Linux forum</A> where you can read and place all your installation
 woe&rsquo;s. Failing that do the <A HREF="http://www.google.com.au/linux">google!</A>
 Let&rsquo;s get on with it then&hellip;.</SPAN></P>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">&nbsp;</P>
+<P LANG="en-US" STYLE="margin-left: 1.27cm">&nbsp;</P>
 <OL START=2>
 	<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Partioning and
 	Formatting</FONT></SPAN> 
@@ -96,51 +93,52 @@ Let&rsquo;s get on with it then&hellip;.</SPAN></P>
 				</P>
 	</OL>
 </OL>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">Partitioning
-is breaking the hard drive into logical parts to store relevant
-information for the system. Historically this was done for many
-reasons but has origins in older tape systems and distributed network
-systems. It is a great tool for being able to manage redundacy and
-temporary data. For most home workstation systems the partition is
-very simple. We generally need only create three partitions: A small
-boot partition and the start of the hard drive, next we&rsquo;ll have
-some temporary data storage and lastly the remainder of the system. 
+<P LANG="en-US" STYLE="margin-left: 1.27cm">Partitioning is breaking
+the hard drive into logical parts to store relevant information for
+the system. Historically this was done for many reasons but has
+origins in older tape systems and distributed network systems. It is
+a great tool for being able to manage redundacy and temporary data.
+For most home workstation systems the partition is very simple. We
+generally need only create three partitions: A small boot partition
+and the start of the hard drive, next we&rsquo;ll have some temporary
+data storage and lastly the remainder of the system. 
 </P>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">Breaking
-the data into three (or more) logical partitions has many advantages
-(and disadvantages) so I&rsquo;ll only cover them briefly. Having a
-small boot partition at the start of the drive is the obvious place
-to have bootable files, you could really store them anywhere however
-the position of the <B>small </B>partition will make sense shortly.
-We keep only the files necessary to boot into the system in this
-space. As they are not needed once the system is up, the partition
-can then be unmounted. Common files to find here are the Kernel image
-itself as well as system maps and boot configuration files. We
-recommend having at least 10MB (Space to keep at least one kernel and
-one backup) and not needing any more than 50MB.</P>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">The
-temporary data storage is called swap space. The swap space is
-similar to a Windows or Mac OS virtual memory file. The advantages of
-having a fixed partition for this information at the top of a hard
-drive is that you ensure speed of access. The obvious drawback
-however is that it is of a fixed maximum size (This can also been
-seen as an advantage considering some algorithms for handling virtual
-memory allocation and release). Swap space can be a difficult one to
-allocate, the general rule of one &ndash; three &nbsp;times your
-physical memory may no longer apply. There is literature online if
-you want a more informed choice however you can apply the formula
-<FONT COLOR="#008000">&lt;Insert Formula here&gt;</FONT>. 
+<P LANG="en-US" STYLE="margin-left: 1.27cm">Breaking the data into
+three (or more) logical partitions has many advantages (and
+disadvantages) so I&rsquo;ll only cover them briefly. Having a small
+boot partition at the start of the drive is the obvious place to have
+bootable files. You could really store them anywhere however the
+position of the <B>small </B>partition will make sense shortly. We
+keep only the files necessary to boot into the system in this space.
+As they are not needed once the system is up, the partition can then
+be unmounted. Common files to find here are the Kernel image itself
+as well as system maps and boot configuration files. We recommend
+having at least 10MB (Space to keep at least one kernel and one
+backup) and not needing any more than 50MB.</P>
+<P LANG="en-US" STYLE="margin-left: 1.27cm">The temporary data
+storage is called swap space. The swap space is similar to a Windows
+or Mac OS virtual memory file. The advantages of having a fixed
+partition for this information at the top of a hard drive is that you
+ensure speed of access. The obvious drawback however is that it is of
+a fixed maximum size (This can also been seen as an advantage
+considering some algorithms for handling virtual memory allocation
+and release). Swap space can be a difficult one to allocate, the
+general rule of thumb &ndash; three times your physical memory may no
+longer apply. There is literature online if you want a more informed
+choice however you can apply the formula <FONT COLOR="#008000">&lt;Insert
+Formula here&gt;</FONT>. 
 </P>
-<P CLASS="msonormal" STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">The
-rest of your disk should be for the rest of the system. If you want
-to learn more or need a more complex setup <A HREF="../../../../\\insert document here">click
+<P STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">The rest of your
+disk should be for the rest of the system. If you want to learn more
+or need a more complex setup <A HREF="../../../../\\insert document here">click
 here</A>. </SPAN>
 </P>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">&nbsp;</P>
-<P LANG="en-US" CLASS="msonormal" STYLE="margin-left: 1.27cm">You
-have the choice of parted, fdisk or cfdisk as partitioning tools.
-Click on your preferred tool for a brief of how to use, if unsure use
-cfdisk.</P>
+<P STYLE="margin-left: 1.27cm"><BR><BR>
+</P>
+<P STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">You have the choice
+of parted, <A HREF="fdisk.html">fdisk</A> or <A HREF="cfdisk.html">cfdisk</A>
+as partitioning tools. Click on your preferred tool for a brief of
+how to use, if unsure use cfdisk.</SPAN></P>
 <OL START=2>
 	<OL TYPE=a START=2>
 		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Brief explaination
@@ -148,19 +146,19 @@ cfdisk.</P>
 				</P>
 	</OL>
 </OL>
-<P CLASS="msonormal" STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">Now
-that we have partitions created we need to format the filesystem so
-as we can write to it. Linux can natively read and write to many
-different filesystem types. Most commonly found is the <A HREF="http://e2fsprogs.sourceforge.net/ext2.html">second
+<P STYLE="margin-left: 1.27cm"><SPAN LANG="en-US">Now that we have
+partitions created we need to format the filesystem so as we can
+write to it. Linux can natively read and write to many different
+filesystem types. Most commonly found is the <A HREF="http://e2fsprogs.sourceforge.net/ext2.html">second
 extended filesystem</A> which is a robust filesystem designed to
-recoverable and extesible. Like any good movie series though there is
-a third iteration, but unlike the movies et3fs is an improvement on
-the last by adding journaling support for the volume. <BR><A HREF="http://www.namesys.com/content_table.html">ReiserFS</A>
+recoverable and extensible. Like any good movie series though there
+is a third iteration, but unlike the movies et3fs is an improvement
+on the last by adding journaling support for the volume. <BR><A HREF="http://www.namesys.com/content_table.html">ReiserFS</A>
 is a common alternative to the mainstream filesystems. It is a
 journaling filesystem which has been designed with small files in
 mind, but that's not to say that it doesn't handle large files well.
 As the homepage suggests comparitive tests show ReiserFS to be more
-efficient than its ext3fs conterpart. <BR>To further understand the
+efficient than its ext3fs counterpart. <BR>To further understand the
 complexities of filesystems my first stop would be the <A HREF="http://tldp.org/HOWTO/Filesystems-HOWTO.html">HOWTO</A>
 guide on <A HREF="http://tldp.org/">The Linux Documentation Project</A>.
 In summary, we recommend formating with ext3fs as it's vanilla yet
@@ -185,32 +183,88 @@ has the support for journaling which improves stability.</SPAN></P>
 		</P>
 	<OL TYPE=a START=2>
 		<LI VALUE=1><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Brief&nbsp;
-		expalinationof users, multiuser systems and the importance of the
+		expalination of users, multiuser systems and the importance of the
 		superuser</FONT></SPAN> 
+		</P>
+		<P>Linux is a multiuser system. Not only does this mean that more
+		than one person can store their personal preferences, background
+		images or desktop layouts seprately without effecting other users
+		it means that more than one user can be logged in at the same time.
+		Before we divert off topic into how this is possible lets focus on
+		creating the names and passwords of the users that will need access
+		to the system. 
+		</P>
+		<P>User names are just a string of up to 8 characters which is also
+		case sensitive.  Then type a password for the user, as with any
+		password it is advisable to have a combination of letters, upper
+		and lowercase, numbers and symbols. Passwords should be more than 8
+		characters in length and not something easily guessed eg.
+		&ldquo;Password1&rdquo; and &ldquo;Secrets1&rdquo; are bad.
+		&ldquo;3l3phAnts&rdquo;, &ldquo;F1reTruck5&rdquo; and &ldquo;3L1teH4x0r5&rdquo;
+		are better. 
 		</P>
 		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Set the root passwd</FONT></SPAN>
 				</P>
-		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Explain
-		/etc/password.conf and its importance in a unix</FONT></SPAN> 
+		<P>&ldquo;What if I forget my password?&rdquo; No problem. A unix
+		system has taken this into account by adding the super user. For
+		all practical purposes the super user (Normally known as root) is
+		God to the system. Root has no restrictions and therefore can be
+		very Jeckel and Hyde. While root has the power to restore the
+		system from any problem, root also can botch it beyond repair. If
+		someone wants to break into your system they normally go for the
+		superuser for obvious reasons. This is why it is imperative to
+		select a password for the superuser that only you will know and be
+		sure to remember it!</P>
+		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Explain /etc/passwd
+		and its importance in a unix</FONT></SPAN> 
 		</P>
 	</OL>
 </OL>
-<P CLASS="msonormal" STYLE="margin-left: 3.81cm; text-indent: -3.81cm">
-<!--[if !supportLists]--><SPAN LANG="en-US"><FONT COLOR="#ff6600"><FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<P LANG="en-US" STYLE="margin-left: 3.81cm; text-indent: -3.81cm"><FONT COLOR="#ff6600"><FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </FONT></FONT>i.<FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--[endif]-->
-</FONT></FONT>Iteratively add users &amp; passwords</FONT></SPAN></P>
+</FONT></FONT>Iteratively add users &amp; passwords</FONT></P>
 <OL START=4>
 	<OL TYPE=a START=4>
 		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Explain groups and
 		their importance</FONT></SPAN> 
 		</P>
+		<P>Having a home directory for each user on the system just makes
+		sense! Keeping Mum's solitaire high scores seperated from Dad's
+		memoires and your own files keeps thing organised and straigh
+		forward. Important administration tasks are greatly improved for
+		one, eg. Backing up all the created files in the system should be
+		as easy as tarball, gzipping the /home directory and burning a CD.
+		It also means that no one else can view work that they shouldn't
+		have access to. I.e. No more prying eyes reading diary entries,
+		veiwing you personal collection of photo's or deleting the save
+		game of civ that took threee days to finally amass enough power to
+		wipe out the America's!</P>
+		<P>This also means that working collaboratively would be a
+		nightmare, hence the need for groups. Group permissions enable the
+		system to share access rights between several users. Continuing on
+		the example above Mum and Dad would presumable belong to the group
+		Parents. Parents would need to be able to access things like
+		budget.file and /home/bills where as Children would not. This is
+		quite an over simplification for the implemetations of users and
+		groups however hopefully this gives you the idea.</P>
 	</OL>
 </OL>
-<P CLASS="msonormal" STYLE="margin-left: 3.81cm; text-indent: -3.81cm">
-<!--[if !supportLists]--><SPAN LANG="en-US"><FONT COLOR="#ff6600"><FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<P LANG="en-US" STYLE="margin-left: 3.81cm; text-indent: -3.81cm"><FONT COLOR="#ff6600"><FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </FONT></FONT>i.<FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--[endif]-->
 </FONT></FONT>Add users to groups. User and poweruser for
-convieneance</FONT></SPAN></P>
+convieneance</FONT></P>
+<P LANG="en-US" STYLE="margin-left: 3.81cm">To help you get started
+with users and groups we have defined user and poweruser for you
+convenience. To discriminate the two groups essentially users will be
+able to log on and use the system (including things like audio and CD
+writers if applicable) and log off when done. Powerusers by contrast
+will be able to change runlevels (including rebooting and shutdown),
+install new software, and generally configure the system. This power
+does come at a price as it also includes the ability to change
+important system settings. If you're unsure about which group to add,
+add user. It can always be changed later and remember any
+configuration of the system can be done by temporary use of the
+superuser.</P>
 <OL START=5>
 	<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Settings</FONT></SPAN>
 		</P>
@@ -220,10 +274,9 @@ convieneance</FONT></SPAN></P>
 		</P>
 	</OL>
 </OL>
-<P CLASS="msonormal" STYLE="margin-left: 3.81cm; text-indent: -3.81cm">
-<!--[if !supportLists]--><SPAN LANG="en-US"><FONT COLOR="#ff6600"><FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<P LANG="en-US" STYLE="margin-left: 3.81cm; text-indent: -3.81cm"><FONT COLOR="#ff6600"><FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </FONT></FONT>i.<FONT SIZE=1><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--[endif]-->
-</FONT></FONT>Go over some of the important settings.</FONT></SPAN></P>
+</FONT></FONT>Go over some of the important settings.</FONT></P>
 <OL START=5>
 	<OL TYPE=a START=2>
 		<LI><P><SPAN LANG="en-US"><FONT COLOR="#ff6600">Explain the
