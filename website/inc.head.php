@@ -20,9 +20,10 @@
 			<?php if ($_SESSION['id'] > 0) { echo("<p>(".$_SESSION['user'].")</p>"); } ?>
 			<ul>
 				<li><a href="index.php">Main</a></li>
-				<li><a href="http://www.longlandclan.hopto.org/phpBB2/index.php?c=10">Forum</a></li>
+				<li><a href="http://atomicl.berlios.de/phpBB2/">Forum</a></li>
 				<li><a href="documentation.php">Documentation</a></li>
 				<li><a href="download.php">Download</a></li>
+				<li><a href="ftp://ftp.berlios.de/pub/atomicl">FTP</a></li>
 			</ul>
 		</div>
 
