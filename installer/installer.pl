@@ -94,40 +94,109 @@ $choice = menu("Where do you want to mount the root directory?",@devices);
 print "You chose @devices[$choice]\n";
 $root = @devices[$choice];
 @devices = (@devices[0..($choice-1)],@devices[$choice+1..$#devices]);
+%fs = ("/",$root);
 
 $choice = menu("Where do you want to mount the swap file?",@devices);
 $swap = @devices[$choice];
 print "You chose @devices[$choice]\n";
+@devices = (@devices[0..($choice-1)],@devices[$choice+1..$#devices]);
 
-$finished = false;
-$i = 0;
-	print "Select a folder to mount, or f to finish\n";
+$finished = 0;
+if($#devices < 0) {
+	$finished = 1;
+}
+while(!$finished) {
+	$i = 0;
+	print "Select a directory to mount, or f to finish\n";
 	foreach (@mPoints) {
 		$i++;
 		print "$i - $_\n";
 	}
 	print "(1-$i, or f):";
-#	$choice = <STDIN>;
+	$choice = <STDIN>;
+	chomp($choice);
+	if($choice eq "f") {
+		$finished = 1;
+	}
+	if($choice > 0 && $choice <= $i) {
+		# Choose where you want to mount the folder
+		$part = menu("Where do you want to mount @mPoints[$choice-1]",@devices);
+		$fs{@mPoints[$choice-1]} = @devices[$part];
+		@devices = (@devices[0..$part-1],@devices[$part+1..$#devices]);
+		@mPoints = (@mPoints[0..$choice-2],@mPoints[$choice..$#mPoints]);
+		if($#devices < 0 || $#mPoints < 0) {
+			$finished=1;
+		}
+	}
+}
 
 # Format partitions as required
-# Can detect fs type by mounting the drive, then listing the mounted drives
-
-# Choose mount locations
+@fileSystems = ("ext2", "ext3", "xfs","Reiser");
+$choice = menu("Which file system do you wish to use?",@fileSystems);
+foreach(%fs) {
+	if(@fileSystems[$choice] eq "ext2") {
+		#`mkfs.ext2 $fs{$_}`;
+	} elsif(@fileSystems[$choice] eq "ext3") {
+		#`mkfs.ext3 $fs{$_}`;
+	} elsif(@fileSystems[$choice] eq "xfs") {
+		#`mkfs.xfs $fs{$_}`;
+	} else {
+		#`mkreiserfs $fs{$_}`;
+	}
+}
+#`mkswap $swap`
 
 # Mount partitions under /mnt
+`mount /dev/$fs{"/"} /mnt/root`;
+#Create root directory structure
+#`mkrootfs`;
+chdir "/mnt/root";
+foreach $key (sort keys %fs) {
+	if($key ne "/") {
+		`mount /dev/$fs{$key} /mnt$key` 
+	}
+}
 
 # Extract base system tarball into new system
 
-# Maybe chroot into new system?
 
 # Setup the root password
+$done = 0;
+until $done {
+	print "Enter your root password:";
+	$pw1 = chomp <STDIN>;
+	print "Enter the password again:";
+	$pw2 = chomp <STDIN>;
+	if($pw1 eq $pw2){
+		$done = 1;
+		#$pw = `crypt $
+		#`chroot /mnt/root usermod -
+	}
+}
+#`chroot /mnt/root passwd root`; 
 
 # Add extra users as required. The loop should be:
 # create username
 # create home directory
 # set password for user
-
-# Config sudoers (people that can change user)
+$done = 0;
+until $done {
+	$choice = 0;
+	while($choice < 1 && $choice > 2) {
+		print "Do you want to add another user?\n";
+		print "1 - Yes\n";
+		print "2 - No\n";
+		print "(1 or 2):";
+		$choice = <STDIN>;
+	}
+	if($choice == 2)
+		$done = true;
+	else {
+		print "Enter user name:";
+		$username = <STDIN>;
+		# `useradd 
+	}
+}
 
 # Add Users to appropriate groups
 
