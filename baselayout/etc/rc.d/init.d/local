@@ -1,0 +1,16 @@
+#!/usr/bin/perl -w
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+($cmd) = @ARGV;
+
+if ($cmd eq 'start') {
+
+	system("/etc/rc.d/rc.local");
+	setStatus('local', "pid$$");
+
+} elsif ($cmd eq 'stop') {
+
+	setStatus('local','stopped');
+
+}

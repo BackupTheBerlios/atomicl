@@ -1,0 +1,28 @@
+#!/usr/bin/perl -w
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+$CLOCKPARAMS="--hctosys";
+
+if ((($ENV{UTC} eq 'yes') or ($ENV{UTC} eq 'true')) or ($ENV{UTC} eq 1)){
+	$CLOCKPARAMS="$CLOCKPARAMS --utc";
+} else {
+	$CLOCKPARAMS="$CLOCKPARAMS --localtime";
+}
+
+my ($cmd) = @ARGV;
+
+if ($cmd eq 'start') {
+	print STDERR $A_BOLD.$F_YELLOW."Setting clock...\n".$A_NONE;
+	system("hwclock $CLOCKPARAMS");
+	setStatus('setclock',"pid$$");
+
+	print STDERR $A_BOLD.$F_YELLOW."Clock is set.\n".$A_NONE;
+
+} elsif ($cmd eq 'stop') {
+	setStatus('setclock',"stopped");
+
+}
+
+# End $rc_base/init.d/setclock
+

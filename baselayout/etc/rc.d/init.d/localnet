@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+($cmd) = @ARGV;
+
+if ($cmd eq 'start') {
+	print STDERR $A_BOLD.$F_YELLOW."Bringing up the loopback interface...\n".$A_NONE;
+	if ( system("ifconfig lo 127.0.0.1") eq 0 ) {
+		print STDERR $A_BOLD.$F_GREEN."Done configuring loopback interface.\n".$A_NONE;
+	} else {
+		setStatus('localnet','error');
+		die $A_BOLD.$F_RED."Failed to configure the loopback interface!\n".$A_NONE;
+	}
+
+	$hostname = `cat /etc/sysconfig/network/hostname`;
+	chomp($hostname);
+	
+	print STDERR $A_BOLD.$F_YELLOW."Setting hostname...$hostname\n".$A_NONE;
+	if ( system("hostname $hostname") eq 0 ) {
+		print STDERR $A_BOLD.$F_GREEN."Done setting hostname.\n".$A_NONE;
+		setStatus('localnet',"pid$$");
+	} else {
+		print STDERR $A_BOLD.$F_RED."Failed to set hostname.\n".$A_NONE;
+		setStatus('localnet','error');
+	}
+
+} elsif ($cmd eq 'stop') {
+
+	print STDERR $A_BOLD.$F_YELLOW."Bringing down the loopback interface...".$A_NONE;
+	system("ifconfig lo down");
+	print STDERR $A_BOLD.$F_GREEN."Loopback interface is down.".$A_NONE;
+	setStatus('localnet','stopped');
+
+}

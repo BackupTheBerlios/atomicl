@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+my ($cmd) = @ARGV;
+
+if ($cmd eq 'start') {
+
+	print STDERR $A_BOLD.$F_YELLOW."Loading keymap...\n".$A_NONE;
+	if ( system("loadkeys -d") eq 0 ) {
+		print STDERR $A_BOLD.$F_GREEN."Done loading keymap\n".$A_NONE;
+		setStatus('loadkeys', "pid$$");
+	} else {
+		print STDERR $A_BOLD.$F_RED."Failed to load keymap\n".$A_NONE;
+		setStatus('loadkeys', 'error');
+	}
+	
+} elsif ($cmd eq 'stop') {
+
+	# Not implemented
+	setStatus('loadkeys','stopped');
+
+}

@@ -1,0 +1,28 @@
+#!/usr/bin/perl -w
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+($cmd) = @ARGV;
+
+if ($cmd eq 'start') {
+	print STDERR $A_BOLD.$F_YELLOW."Starting system log daemon...\n".$A_NONE;
+	system("syslogd -m 0");
+	print STDERR $A_BOLD.$F_GREEN."Started system log daemon.\n".$A_NONE;
+
+	print STDERR $A_BOLD.$F_YELLOW."Starting kernel log daemon...\n".$A_NONE;
+	system("klogd");
+	print STDERR $A_BOLD.$F_GREEN."Started kernel log daemon.\n".$A_NONE;
+
+	setStatus('sysklogd', "pid$$");
+
+} elsif ($cmd eq 'stop') {
+	print STDERR $A_BOLD.$F_YELLOW."Stopping kernel log daemon...\n".$A_NONE;
+	system("killall klogd");
+	print STDERR $A_BOLD.$F_GREEN."Stopped kernel log daemon.\n".$A_NONE;
+
+	print STDERR $A_BOLD.$F_YELLOW."Stopping system log daemon...\n".$A_NONE;
+	system("killall syslogd");
+	print STDERR $A_BOLD.$F_GREEN."Stopped system log daemon.\n".$A_NONE;
+
+	setStatus('sysklogd','stopped');
+}

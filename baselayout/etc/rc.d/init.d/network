@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+($cmd) = @ARGV;
+
+if ($cmd eq 'start') {
+	print STDERR $A_BOLD.$F_YELLOW."Bringing up the network...\n".$A_NONE;
+	if ( system("/usr/sbin/switchnet default") eq 0 ) {
+		print STDERR $A_BOLD.$F_GREEN."Done setting up the network.\n".$A_NONE;
+		setStatus('network',"pid$$");
+	} else {
+		print STDERR $A_BOLD.$F_RED."...Failed!!!\n".$A_NONE;
+		setStatus('network','error');
+	}
+
+} elsif ($cmd eq 'stop') {
+
+	setStatus('network','stopped');
+
+}
