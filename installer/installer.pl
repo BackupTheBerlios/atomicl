@@ -73,7 +73,46 @@ elsif($prog == 3)
 	system "parted";
 }
 
+# Get partition list
+open PARTITIONS, "/proc/partitions" or die "Problem with proc filesystem ($!)";
+$header = <PARTITIONS>;
+#print "Header:$header\n";
+@devices = ();
+while(<PARTITIONS>) {
+	#print "$_\n";
+	if(!/^\s+\d\s+0/ && !/^\s*$/) {
+		/\s+(\w+)$/;
+		#print "$1\n";
+		push @devices, $1
+	}
+}
+@mPoints = ("/etc","/boot","/home","/lib","/tmp","/usr","/var");
+
+# Choose mount locations
+#print "Where do you want to mount the root directory?\n";
+$choice = menu("Where do you want to mount the root directory?",@devices);
+print "You chose @devices[$choice]\n";
+$root = @devices[$choice];
+@devices = (@devices[0..($choice-1)],@devices[$choice+1..$#devices]);
+
+$choice = menu("Where do you want to mount the swap file?",@devices);
+$swap = @devices[$choice];
+print "You chose @devices[$choice]\n";
+
+$finished = false;
+$i = 0;
+	print "Select a folder to mount, or f to finish\n";
+	foreach (@mPoints) {
+		$i++;
+		print "$i - $_\n";
+	}
+	print "(1-$i, or f):";
+#	$choice = <STDIN>;
+
 # Format partitions as required
+# Can detect fs type by mounting the drive, then listing the mounted drives
+
+# Choose mount locations
 
 # Mount partitions under /mnt
 
@@ -99,3 +138,24 @@ elsif($prog == 3)
 # Setup network
 
 # Setup bootscripts
+
+0;
+
+
+sub menu {
+	my $title = shift @_;
+	my @options = @_;
+	my $i = 0;
+	my $choice = 0;
+	while($choice < 1 || $choice > $i) {
+		$i=0;
+		print "$title\n";
+		foreach (@options) {
+			$i++;
+			print "$i - $_\n";
+		}
+		print "(1-$i):";
+		$choice = <STDIN>;
+	}
+	$choice-1;
+}
