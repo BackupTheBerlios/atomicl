@@ -1,0 +1,20 @@
+#!/usr/bin/perl -w
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+# Get a list of every service that is currently running...
+@stoplist = ();
+foreach $service ( sort keys %G_status ) {
+	if ($service =~ /^pid/) {
+		push (@stoplist, $service);
+	}
+}
+
+# Tell them to get lost...
+stopService( @stoplist );
+
+# Wait a while
+sleep 5;
+
+# Call in the cleanup party...
+system("/sbin/halt -d -f -i -p");

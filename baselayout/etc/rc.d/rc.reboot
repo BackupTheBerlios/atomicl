@@ -1,0 +1,32 @@
+#!/usr/bin/perl -w
+
+require '/etc/rc.d/scripts/InitLibrary.pl';
+
+# Get a list of every service that is currently running...
+@stoplist = ();
+%status = getStatus();
+foreach $service ( sort keys %status ) {
+	print "$service is ".$status{$service}."\n";
+	if ($status{$service} =~ /^pid/) {
+		print "\tadding to stoplist\n";
+		push (@stoplist, $service);
+	}
+}
+
+# Tell them to get lost...one by one
+foreach $service ( @stoplist ) {
+	stopService( $service );
+}
+
+# Wait a while
+sleep 2;
+
+# Unmount filesystems, etc... the fun stuff...
+foreach $service ( split( /\0/, `find /etc/rc.d/bootstrap.d -print0` ) ) {
+	if (not -f $service) { next; }
+	if (not $service =~ /\/K\d+.*$/) { next; }
+
+	system("$service stop\n");
+}
+# Call in the cleanup party...
+system("/sbin/reboot -d -f -i");

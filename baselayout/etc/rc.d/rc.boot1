@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Atomic Linux Booting -- At Stage 1"
+
+for service in /etc/rc.d/bootstrap.d/S*; {
+	echo $service start
+	$service start
+}
+
+echo "Stage 1 start -- on to Stage 2"
+/etc/rc.d/rc.boot2

@@ -1,0 +1,82 @@
+#!/usr/bin/perl -w
+
+# Get release info...
+$version = `cat /etc/atomic-release`; chomp $version;
+
+# Get hostname
+$hostname = `/bin/hostname`; chomp $hostname;
+
+# Kernel version
+$kernel = `/bin/uname -r`; chomp $kernel;
+
+# Get CPU Info...
+open CPUINFO, "</proc/cpuinfo" or die "Couldn't open /proc/cpuinfo (Is /proc mounted?) $!\n";
+
+$cpucount = 0;
+foreach $line (<CPUINFO>) {
+	
+	if ($line =~ /^cpu MHz\t\t: (\d*\.\d*)$/i) {
+		$cpuspeed = $1;
+	} elsif ($line =~ /^model name\t: (.*)$/) {
+		$cpumodel = $1;
+	} elsif ($line =~ /^processor\t: (\d+)$/) {
+		if ($cpucount < $1) {
+			$cpucount = $1;
+		}
+	}
+}
+
+close CPUINFO;
+
+open MEMINFO, "</proc/meminfo" or die "Couldn't open /proc/meminfo (Is /proc mounted?) $!\n";
+foreach $line (<MEMINFO>) {
+	if ($line =~ /memtotal:\s*(\d*) kb/i) {
+		$memtotal = $1;
+		last;
+	}
+}
+close MEMINFO;
+$cpucount++;
+
+# Print a logo -- to both stdout and /etc/issue
+
+open OUT, "| tee /etc/issue" or die($!);
+
+print OUT <<EOF;
+                                                           \e[1m.aa,
+        \e[31;1mjQW\e[37m                _s,                             3WD'
+ \e[32m_aa.   \e[31m\"??\e[37m               .QQk
+ \e[32m]WQ:\e[37m           .aQQQQmc )QQQQC  ayQQQmc  :mQgwQQmayQQQc  =mQ[ .awQQQw>
+               .jQT^~9Qk -3WQ( _wQW??VQQc =QWD?9QQWT?\$QQ; ]QW(.jWD??\$Qm,
+                =iaaamQe :qQE` jQE`  :mQ[ jWZ` _QQ( .qWk..jQE`<We`  \"??`
+      \e[34m:QQ[\e[37m     amQVT\$QQ( :mQC.=QQc   <mW( dWe  3QB` .mQk :WWc:mW(
+      \e[34m-??'\e[37m    aWW; _yQE` ]Q#: =QQo  <mQE 3WQ; .qWk  )QE..dQW.:mQc  _mWC
+              3WQQQWQQk  ]QQQ; ]QQQQQQP  3WD' =mW[  jQF`_mQP -?QWQWQWP'
+               ~??^~??\"  -??!   -???!-  -??\"  \"??' -??^ -??^   \"???\"-
+
+
+                                      saa. _ac
+                                     .dQ2`:WQC
+                                     )QQ[
+                                    .3QE: jQW`.mQkwQWmc  :mQC  :WWe 3QQ>.jQ\@^
+                                    .dQ#:.QQk )WQD??\$Qm, )QB;  )Qm` =WWgwQW!
+                                    )QW( <QB!.jmE  .jQB'.wQc  _wQe   ?QWWP'
+                                    =QW; ]W#: 3QC  :mQk .QW(  <QQc   )QQm;
+                                   .QWk )WQ[ ]QW=  )QW; dQm; .mW#: .wQWWWk.
+                                   <QW}.jm\@'.jQD`  jWD` 3QQQQWQQF`_jQD')QQc
+                                   \"??` \"?!` ??\"   ??\"   ~??!`??' !??~  ??\"
+\e[11A\e[36mAtomic Linux Release $version on \e[33m\\n.\\o
+
+\e[32mLinux Kernel version \e[33m$kernel
+\e[35m$cpucount x \e[33m$cpumodel\e[32m
+\trunning at \e[33m$cpuspeed\e[32m MHz.
+
+\t\e[33m$memtotal \e[32mkB physical memory.
+\e[0m
+
+
+
+
+EOF
+
+close OUT;

@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+require "/etc/rc.d/scripts/InitLibrary.pl";
+
+system("/etc/rc.d/rc.logo");
+print "System is booting....one moment please\n";
+system("rm -fr $CFG_STATUS && mkdir -v $CFG_STATUS");
+system("rm -fr $CFG_LOGDIR && mkdir -v $CFG_LOGDIR");
+
+$start_runlevel = `cat /proc/cmdline`;
+if ($start_runlevel=~ /runlevel=([a-zA-Z0-9\-\.,_]+)/) {
+	switchRunlevel(split(/,/, $1));
+} else {
+	switchRunlevel('default');
+}
+
+sleep 5;
+
+# Start the 'local' service _last_
+startService('local');
