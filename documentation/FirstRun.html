@@ -5,7 +5,7 @@
 	<TITLE>Atomic Linux First Run Guide</TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.0.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20031022;6041000">
-	<META NAME="CHANGED" CONTENT="20031211;22310900">
+	<META NAME="CHANGED" CONTENT="20040106;23390500">
 </HEAD>
 <BODY LANG="en-US">
 <H1>First Run Guide</H1>
@@ -136,13 +136,12 @@
 		<OL TYPE=i>
 			<P>No, it's not a bird, or a plane and you can count yourself
 			lucky it isn't a paperclip either! It's a command and a might
-			powerful one at that. Typing <B>man </B><SPAN STYLE="font-weight: medium">(The
-			manual pages) </SPAN>followed by a keyword will result in a
-			plethora of information for most commands and key files in Linux.
-			You may want to try finding out more about <B>cat</B> and <B>echo</B>
-			so type <B>man cat</B> or <B>man echo</B>. This is usually the
-			first port of call so when you get stuck try man first and you may
-			find your answer.</P>
+			powerful one at that. Typing <B>man </B>(The manual pages)
+			followed by a keyword will result in a plethora of information for
+			most commands and key files in Linux. You may want to try finding
+			out more about <B>cat</B> and <B>echo</B> so type <B>man cat</B>
+			or <B>man echo</B>. This is usually the first port of call so when
+			you get stuck try man first and you may find your answer.</P>
 		</OL>
 		<H2>What's up Doc?</H2>
 		<OL TYPE=i>
@@ -179,8 +178,9 @@
 			even worth listening to! Most of the ones worth listening to are
 			on the forums. The Official</FONT> <A HREF="http://atomicl.berlios.de/phpBB2/">Atomic
 			Linux Forums</A> <FONT COLOR="#000000">are always a good start.
-			There are also many others, some of note include JustLinux and </FONT></FONT>
-			</P>
+			There are also many others, some of note include <A HREF="mailto:www.justlinux.com">JustLinux</A>
+			and <A HREF="mailto:http://www.linuxquestions.org/">Linux
+			Questions</A>.</FONT></FONT></P>
 		</OL>
 	</OL>
 	<H2>What happened to my &lt;insert device here&gt;?</H2>
@@ -196,74 +196,253 @@
 		through the file tree. Yes, Everything! From your normal files and
 		directories, to all your devices attached to the system and even
 		the code the kernel is currently processing. Let me quickly
-		demonstrate the power of this filesystem, <B>cat /proc/cpuinfo </B><SPAN STYLE="font-weight: medium">and
+		demonstrate the power of this filesystem, <B>cat /proc/cpuinfo </B>and
 		you should be presented with detailed information about the current
 		status of your CPU(S). You can try some others, I'll just keep
 		rambling and you can catch up to me later, Just don't <B>cat
-		/proc/kcore</B>. Don't say I didn't warn you!</SPAN></FONT></P>
+		/proc/kcore</B>. Don't say I didn't warn you!</FONT></P>
 		<P STYLE="font-weight: medium"><FONT COLOR="#000000">First lets
-		find your CD devices. Devices are found under the /dev directory.
-		For example the physical link to your primary hard drive is
-		represented by /dev/hda and the first logical partition on that
-		hard drive is /dev/hda1. It's not rocket science! A standard
-		convention is to link /dev/cdrom to the first cdrom drive found on
-		the system and is nearly always a link to /dev/cdroms/cdrom0. Now
-		that we've located the CD-ROM device we can mount it. Come on,
-		focus people! Can we keep our minds out of the gutter. Mounting a
-		device simply means initialise the device and prepare it for data
-		transfer. </FONT>
+		find your CD devices. Devices are found under the <B>/dev</B>
+		directory. For example the physical link to your primary hard drive
+		is represented by <B>/dev/hda</B> and the first logical partition
+		on that hard drive is <B>/dev/hda1</B>. It's not rocket science! A
+		standard convention is to link <B>/dev/cdrom</B> to the first cdrom
+		drive found on the system and is nearly always a link to
+		<B>/dev/cdroms/cdrom0</B>. Now that we've located the CD-ROM device
+		we can mount it. Come on, focus people! Can we keep our minds out
+		of the gutter. Mounting a device simply means initialise the device
+		and prepare it for data transfer. </FONT>
 		</P>
 		<P STYLE="font-weight: medium"><FONT COLOR="#000000">By typing the
 		command <B>mount -t iso9660 /dev/cdrom /mnt/cdrom </B>we are asking
-		the kernel to recognise the device <I>/dev/cdrom</I><SPAN STYLE="font-style: normal">
-		which has a filesystem of type <I>(-t iso9660)</I> iso9660 to be
-		mounted in the filesystem at the point <I>/mnt/cdrom</I>. In
-		english that means make the files on my cdrom readable from the
-		/mnt/cdrom directory. Ensuing that you have a cdrom in the drive
-		this command should execute without error. When we're finished
-		reading (/writing) to a filesystem we also need to unmount it, it's
-		like putting our toys away once we're finished playing with them.
-		Because it's already mounted we can be lazy and get away with
-		typing <B>umount /mnt/cdrom</B> and as long as it isn't in use
-		(Including if you are currently in the directory) the filesystem
-		will be unmounted. There are some workarounds for stubborn mounts
-		and failed hardware without cutting the power but to find out more
-		just <B>man mount</B>.</SPAN></FONT></P>
+		the kernel to examine the device <I>/dev/cdrom</I> which has a
+		filesystem of type <I>(-t iso9660)</I> iso9660 to be mounted in the
+		filesystem at the point <I>/mnt/cdrom</I>. In English that means
+		make the files on my CD-ROM readable from the /mnt/cdrom directory.
+		Ensuing that you have a CD-ROM in the drive this command should
+		execute without error. When we're finished reading (/writing) to a
+		filesystem we also need to unmount it. It's like putting our toys
+		away once we're finished playing with them. Because it's already
+		mounted we can be lazy and get away with typing <B>umount
+		/mnt/cdrom</B> and as long as it isn't in use (Including if you are
+		currently in the directory) the filesystem will be unmounted. There
+		are some workarounds for stubborn mounts and failed hardware
+		without cutting the power but to find out more just <B>man mount</B>.</FONT></P>
 		<P STYLE="font-style: normal; font-weight: medium"><FONT COLOR="#000000">For
 		common and regularly mounted filesystems there is a file you can
 		edit that will help cut down some time and also allow normal (Non
 		root) users to mount the filesystem. Fire up a text editor and edit
-		the fstab (File System table), nano /etc/fstab. You should be
-		presented with a text config file that resembles</FONT></P>
-		<LI><P><FONT COLOR="#800000">Where do you want to go next?</FONT></P>
+		the <B>fstab</B> (<B>f</B>ile <B>s</B>ystem <B>tab</B>le), <B>nano
+		/etc/fstab</B>. You should be presented with a text config file
+		that resembles</FONT></P>
+		<P STYLE="margin-bottom: 0cm; font-style: normal; font-weight: medium">
+		<FONT COLOR="#000000">/dev/hda1 /boot ext3 noauto,noatime 1 1</FONT></P>
+		<P STYLE="margin-bottom: 0cm; font-style: normal; font-weight: medium">
+		<FONT COLOR="#000000">/dev/hda3 / ext3 noatime 0 0</FONT></P>
+		<P STYLE="margin-bottom: 0cm; font-style: normal; font-weight: medium">
+		<FONT COLOR="#000000">/dev/hda2 none swap sw 0 0</FONT></P>
+		<P STYLE="margin-bottom: 0cm; font-style: normal; font-weight: medium">
+		<FONT COLOR="#000000">/dev/cdrom /mnt/cdrom iso9660 noauto,ro,user
+		0 0</FONT></P>
+		<P STYLE="margin-bottom: 0cm; font-style: normal; font-weight: medium">
+		<FONT COLOR="#000000"># NOTE: The next line is critical for boot!</FONT></P>
+		<P STYLE="font-style: normal; font-weight: medium"><FONT COLOR="#000000">proc
+		/proc proc defaults 0 0</FONT></P>
+		<P STYLE="font-style: normal; font-weight: medium"><FONT COLOR="#000000">I'm
+		just going to run over this real fast as there is a wealth of
+		information on the topic (You guessed it! You can <B>man</B>
+		<B>/etc/fstab</B> for details). The first column is the device you
+		want to mount, the second where in the file tree you want to mount
+		it and the third is the partition type. The fifth and sixth field
+		relate to the program dump and fsck respectively and as such I
+		won't cover them here. I am however interested in talking about the
+		fourth field.</FONT></P>
+		<P STYLE="font-style: normal; font-weight: medium"><FONT COLOR="#000000">This
+		is a comma seperated list of options that can enable and disable
+		features. You'll note that on the /dev/cdrom line there is <I>noauto,
+		ro </I>and <I>user.</I> Noauto controls whether or not the
+		filesystem is loaded at boot time (Or by a <B>mount -a</B> call)
+		the deafult is <I>auto. </I>The next option <I>ro </I>satnds for
+		read only and can be substituted for <I>rw </I>which is the
+		default. The most important to use for a cdrom is <I>user </I>as
+		this stipulates whether or not a normal user is able to mount this
+		device (Mounting privileges are reserved by root). If you also have
+		a legacy floppy drive then adding the correct details here will
+		enable users to mount floppy drive volumes.</FONT></P>
+		<P STYLE="font-style: normal; font-weight: medium"><FONT COLOR="#000000">This
+		just about does it for a quick summary on how to read a CD and read
+		write to floppies. Writing to a CD will take a little more than 10
+		minutes to explain so lets move on to a brief of how to get a
+		printer going.</FONT></P>
+		<P><FONT COLOR="#000000">The first stop on adding your printer is
+		finding drivers for the Linux platform. Point your browser at
+		<A HREF="http://www.linuxprinting.org/"><FONT SIZE=2><FONT FACE="Arial">www.linuxprinting.org</FONT></FONT></A></FONT><FONT SIZE=2><FONT FACE="Arial"><FONT SIZE=2><FONT FACE="Arial">
+		</FONT></FONT>and search for your printer. If you find that you
+		have a printer thats not supported then the next stop is over to
+		the <A HREF="http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/Printing-HOWTO.html">printer
+		HOW-To</A>. A supported printer is a snap to setup, just follow the
+		quick install guide for use with the appropriate printing layer.
+		Confused? Thats fair, basically think of it as the application you
+		call when you need to output to printer. It's similar to the
+		difference between the driver that runs you display (Nvidia
+		detonators for example) and the program that outputs to it (Say
+		XFree86 as it drives the displaybuffer). We suggest using <A HREF="http://www.cups.org/">CUPS</A>
+		as it is held as being the most compatible.</FONT></FONT></P>
+	</OL>
+	<H2>No applications for you. NEXT!</H2>
+	<OL TYPE=a>
+		<P>Being the total fascists that we are we've dictated to you a
+		list of utilities and programs that we deem absolutely imperative
+		to run a minimalist workstation system. What we haven't done is
+		installed a heap of programs that you'll never use. One of the best
+		features of the Linux platform is the plethora of choice when it
+		comes to applications for a task. Also one of the largest drawbacks
+		to the Linux platform is the overwhelming choice when it comes to
+		making a decision about what application is best for the task for
+		you<FONT COLOR="#000000">! For a detailed list of what has been
+		installed on the system check the i<B>nstall.log</B> found in
+		<B>/var/log/</B>. You can also find the list of packages we've
+		compiled for our latest release <A HREF="http://atomicl.berlios.de/path to distro packages">here</A>.</FONT></P>
+		<P><FONT COLOR="#000000">What you install next is up to you so to
+		help you on your way we've compiled a list of applications to aid
+		in refining you choice of what program to use for what task.</FONT></P>
+		<CENTER>
+			<TABLE WIDTH=65% BORDER=0 CELLPADDING=4 CELLSPACING=0>
+				<COL WIDTH=85*>
+				<COL WIDTH=85*>
+				<COL WIDTH=85*>
+				<TR>
+					<TH WIDTH=33%>
+						<P>Task</P>
+					</TH>
+					<TH WIDTH=33% VALIGN=TOP>
+						<P>Command Line</P>
+					</TH>
+					<TH WIDTH=33% VALIGN=TOP>
+						<P>GUI Application</P>
+					</TH>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=33%>
+						<P>Web Browser</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://atrey.karlin.mff.cuni.cz/~clock/twibright/links">Links</A></P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://www.mozilla.org/">Mozilla</A></P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=33%>
+						<P>MP3 Player</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://www.mpg123.de/">Mpg123</A></P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://www.xmms.org/">xmms</A></P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=33%>
+						<P>File Manager</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://mc.linuxinside.com/">The Midnight Commander</A></P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><BR>
+						</P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=33%>
+						<P>Multi Protocol MSG system</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><BR>
+						</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://gaim.sourceforge.net/">Gaim</A></P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=33%>
+						<P>Word processor</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://www.vim.org/">Vi</A></P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://www.openoffice.org/">OpenOffice.org</A></P>
+					</TD>
+				</TR>
+				<TR VALIGN=TOP>
+					<TD WIDTH=33%>
+						<P>Paint</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><BR>
+						</P>
+					</TD>
+					<TD WIDTH=33%>
+						<P><A HREF="http://www.gimp.org/">The GIMP</A></P>
+					</TD>
+				</TR>
+			</TABLE>
+		</CENTER>
+		<P><FONT COLOR="#000000">To find other programs and applications
+		the place to start is with asking around. We intend to have a
+		Packages section setup on the website soon that will enable better
+		choice in finding and selecting the right package for the right job
+		for you! In the meantime hit the forums, search <A HREF="http://freshmeat.net/">freshmeat</A>
+		and <A HREF="http://sourceforge.net/">sourceforge</A> and if you
+		still come up empty handed do the <A HREF="http://www.google.com.au/">google!</A></FONT></P>
+		<H2>What's in the box?</H2>
 		<OL TYPE=i>
-			<LI><P><FONT COLOR="#800000">Installing programs</FONT></P>
-			<OL TYPE=A>
-				<LI><P><FONT COLOR="#800000">Linux is about choice</FONT></P>
-				<LI><P><FONT COLOR="#800000">What's installed</FONT></P>
-				<LI><P><FONT COLOR="#800000">What's not i.e. Office, media
-				player, Web browser ...etc</FONT></P>
-				<LI><P><FONT COLOR="#800000">How to find programs &amp; apps &amp;
-				code.</FONT></P>
-			</OL>
-			<LI><P><FONT COLOR="#800000">Configuring the system for your needs</FONT></P>
-			<OL TYPE=A>
-				<LI><P><FONT COLOR="#800000">Examples of what can be done</FONT></P>
-				<LI><P><FONT COLOR="#800000">How to make that a reality</FONT></P>
-			</OL>
+			<P><FONT COLOR="#000000">Like any good tool in your collection a
+			computer is used for a purpose. Be that as a workstation and games
+			machine or just a dusty jukebox that sits in the corner it has a
+			purpose in life. Many that have come before you have had a vision
+			about their Uber box and share their stories <A HREF="http://atomicl.berlios.de/phpBB2/viewtopic.php?t=55">here</A>.
+			This is a great link to read if you want to find out just how far
+			you can push the limits.</FONT></P>
+			<P><FONT COLOR="#000000">There will eventually be a plethora of
+			how-to's on creating the box of your dreams. Just remember if you
+			can think it up then it can be done!</FONT></P>
 		</OL>
 	</OL>
-	<LI><P><FONT COLOR="#800000">Conclusion</FONT></P>
+	<H2>Conclusion</H2>
 	<OL TYPE=a>
-		<LI><P><FONT COLOR="#800000">Choice = endless possibility</FONT></P>
-		<LI><P><FONT COLOR="#800000">Limited only by your imagination.</FONT></P>
-		<OL TYPE=i>
-			<LI><P><FONT COLOR="#800000">Even if your not a programmer chances
-			are some1 has done it before.</FONT></P>
-		</OL>
-		<LI><P><FONT COLOR="#800000">Feedback</FONT></P>
-		<LI><P><FONT COLOR="#800000">Enjoy!</FONT></P>
+		<P>Choice is a freedom that we often take for granted. I for one am
+		humbled by the seemingly endless choice that open source software
+		and the contributors thereof provide me with on an ever growing
+		scale. We here at the Atomic Linux development team wish to take
+		this opportunity to thank the efforts put into initiatives like
+		<A HREF="http://www.gnu.org/"></A><A HREF="http://www.gnu.org/">GNU</A><A HREF="http://www.gnu.org/"></A>,
+		The <A HREF="http://www.fsf.org/fsf/fsf.html">Free Software
+		Foundation</A> and The <A HREF="http://www.kernel.org/">Linux
+		Kernel</A> which all help to provide a backbone upon which we can
+		develop computer systems. We'd also like to thank the contributors
+		of projects such as <A HREF="http://www.linuxfromscratch.org/">Linux
+		from Scratch</A>, <A HREF="http://www.xfree86.org/">XFree86</A>,
+		and <A HREF="http://www.openssh.com/">OpenSSH</A> for which help us
+		to enrich our distribution. And lastly a big thanks to thanks to
+		<A HREF="http://www.berlios.de/index.php.en">BerliOS</A> for
+		providing us with some web space and development tools which help
+		realise our vision.</P>
+		<P>The Atomic Linux team wants your feedback. All the insights,
+		bugs, perks, tweaks, quirks, niggles and problems that are on your
+		mind we want to know about so please hit the <A HREF="http://atomicl.berlios.de/phpBB2/">forums</A>
+		and tell us all about it. Found a typo in this document? Disliked
+		it, loved it, didn't follow the tangents? Please email <A HREF="mailto:galdarian@users.berlios.de?subject=First Run Guide V 0.1.0">me</A>.
+		Otherwise that brings me to my final word........</P>
 	</OL>
 </OL>
+<P><BR><BR>
+</P>
+<H1 ALIGN=CENTER>Enjoy!</H1>
 </BODY>
 </HTML>
