@@ -1,0 +1,17 @@
+#!/bin/sh
+cd /mnt/root
+mkdir bin
+mkdir boot
+mkdir dev
+mkdir etc
+mkdir home
+mkdir lib
+mkdir mnt
+mkdir opt
+mkdir proc
+mkdir root
+mkdir sbin
+mkdir tmp
+mkdir usr
+mkdir var
+
