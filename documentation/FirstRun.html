@@ -2,59 +2,251 @@
 <HTML>
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
-	<TITLE></TITLE>
+	<TITLE>Atomic Linux First Run Guide</TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.0.3  (Linux)">
-	<META NAME="CREATED" CONTENT="20031006;153500">
-	<META NAME="CHANGED" CONTENT="20031006;320600">
+	<META NAME="CREATED" CONTENT="20031022;6041000">
+	<META NAME="CHANGED" CONTENT="20031211;22310900">
 </HEAD>
 <BODY LANG="en-US">
-<P><FONT COLOR="#800000">First Run Guide.</FONT></P>
+<H1>First Run Guide</H1>
 <OL>
-	<LI><P><FONT COLOR="#800000">Welcome again to the system</FONT></P>
+	<P><FONT COLOR="#000000">Just before you exit this guide let me take
+	two minutes and explain it's purpose. For those of you new to Linux
+	or migrating from other Linux distributions it might be worth while
+	poking around to find out what we do differently for Atomic Linux to
+	stand out as a unique distribution. Our latest revision will include
+	many tools that you may already be familiar with however I'm sure
+	that being an Atomican you'll not only want to know the OS inside
+	and out but you'll also feel the urge to tweak it, change it or just
+	blow it all away!</FONT></P>
+	<H2>Migrating from windows</H2>
 	<OL TYPE=a>
-		<LI><P><FONT COLOR="#800000">paragraph welcome</FONT></P>
-		<LI><P><FONT COLOR="#800000">Scope &ndash; Let me take two minutes
-		of your time</FONT></P>
+		<P><FONT COLOR="#000000">If you're migrating from the ever present
+		Windows flavour of operating systems do not despair at the lack of
+		GUI with which you are presented for all will soon become clear.
+		Linux has a GUI! Most commonly found is <A HREF="http://www.XFree86.org/" NAME="Xfree86">XFree86</A></FONT>
+		and is included in Atomix. Linux does not restrict you to
+		applications that will only run in a GUI. This is an important
+		difference in paradigm to Windows offerings. Essentially though
+		Linux won't leave you stranded for applications and tools if you
+		choose not to use a GUI.</P>
+	</OL>
+	<H2>Fundamentals of the console</H2>
+	<OL TYPE=a>
+		<P>For those of you wondering, the 'ALT' stands for alternate and
+		'CTRL' also means control and I'm still yet to find an Anykey!
+		Anywho the 'local' service is running 4 terminals on your Linux
+		system right now! &ldquo;Where are they?&rdquo; I hear you ask. The
+		answer to that lies in the mystery that is the Linux kernel.
+		Essentially because Linux is a multiuser system, more that one user
+		can be logged in at any one time. This can be done in a variety of
+		ways but the two most common are at the console and over TCP/IP. 
+		</P>
+		<P><FONT COLOR="#000000">For those of you who are rather attached
+		to a mouse this may be a new experience for you. Anyone who has
+		ever had experience with any of the DOS flavours will relish in
+		this new environment. Getting around in the shell (Bash) is easy.
+		Type <B>ls</B> to get a current listing of the current directory.
+		Typing <B>cd</B> will <B>C</B>hange <B>D</B>irectory but wait a
+		minute don't go quiting this program just yet for I'm about to
+		demonstrate one of the most powerful features of Linux, </FONT>The
+		alternate console!</P>
+		<P>By using a combination of the 'ALT' key and the function keys
+		1-4 you can cycle through the first four console logins. Pressing
+		'ALT' + 'F1' will return you here. On each of these new consoles
+		you will be presented with another login. For now login on an
+		alternate console, then you can return here so that you can
+		continue to read this document and play with your system. Stop
+		sniggering I said system! Read on and learn how to navigate your
+		home directory and create, modify and delete stuff!</P>
+		<P>As mentioned <B>ls</B> <B>l</B>i<B>s</B>ts a the current
+		directory and <SPAN STYLE="text-decoration: none"><B>cd </B>will
+		<B>c</B>hange the <B>d</B>irectory and these are fundamental
+		commands for navigating the filesystem. Let's now have a quick play
+		with organising the filesystem. Firstly navigate to your home
+		directory by typing <B>cd ~ </B><I>(tilde &ndash; This should
+		appear on the key next to 1). </I>Typing <B>mkdir stuff</B> will
+		<B>m</B>a<B>k</B>e a <B>dir</B>ectory named <B>stuff</B>. Change to
+		the directory stuff and we'll create a file called hello_world by
+		typing <B>echo Hi this is my Atomic Linux box &gt; hello_world</B>.
+		This line <B>echo</B>'s the string '<B>Hi this is my Atomic Linux
+		box</B>' into <B>hello_world</B> using <B>&gt; </B><I>(An output
+		redirection)</I>. </SPAN>
+		</P>
+	</OL>
+	<H2>TAB key</H2>
+	<OL TYPE=a>
+		<P><FONT COLOR="#000000">Cool, so so far we can switch consoles,
+		navigate directories, and create simple text files. We shall now
+		learn about the wonderkey. Auto-completion is a wonderful thing.
+		Blessed be the programmer that decided they were too lazy to type
+		the full filesystem path all the time. Repeat after me, Hail to the
+		TAB key, the TAB key the TAB key. Hail to the TAB key, TAB key, the
+		Man!</FONT></P>
+		<P><FONT COLOR="#000000">Suffice to say that I'm suitably impressed
+		by it's function in the console and as I'll demonstrate you'll know
+		doubt be amazed also. We firstly want to make things difficult for
+		ourselves so change directories a few times until you feel
+		comfortably lost! Once you're happy that you are nowhere near your
+		home directory, I want you to display the contents of the file
+		hello_world on the console. Those that rushed ahead and are now
+		reading this after they typed out the full path of the file will
+		kick themselves when the learn the quicker way. If we type <B>cat
+		/h [TAB] </B>you'll find that console has completed the directory
+		/home for you. If the path doesn't complete then there are more
+		than one options to choose from and you have to narrow the search.
+		Hit the TAB key twice to find the output for current options on
+		completing the path. (Note that if you only have one option the
+		console will complete it). Once you located hello_world hit enter
+		(You command line should look something like<B> cat
+		/home/sexgod/hello_world</B>) and it should output <SPAN STYLE="text-decoration: none"><I>Hi
+		this is my Atomic Linux box</I>.</SPAN></FONT></P>
+	</OL>
+	<H2>Locate</H2>
+	<OL TYPE=a>
+		<P><FONT COLOR="#000000">Being able to display files is pretty
+		handy but I'd say being able to find them would be better. Now most
+		GUI's will be able to handle this quite sexily with an icon or
+		three but where does that leave us on the command line? You could
+		achieve this with a script using ls and grep but binaries are
+		faster in runtime (A disadvantage is that binaries need to be
+		recompiled every time you change them). </FONT>
+		</P>
+		<P><FONT COLOR="#000000">The application for achieving this feat is
+		<B>locate</B>. Go and try it now! Type <B>locate hello_world </B>and
+		it should return <I>/home/someone/hello_world </I>or similar. Try a
+		few others like gcc, glibc and linux. To get more information about
+		any application try asking it for help. I.e. <B>Locate --help</B></FONT></P>
+	</OL>
+	<H2>Where to go....</H2>
+	<OL TYPE=a>
+		<P>If you've read this far let me take another 10 minutes of your
+		time to explain where to find help, where all your devices are and
+		now that you have a Linux system that you can brag about what you
+		should do next! 
+		</P>
+		<H2>Help!</H2>
 		<OL TYPE=i>
-			<LI><P><FONT COLOR="#800000">Migrating from Windows</FONT></P>
-			<LI><P><FONT COLOR="#800000">Fundamentals of the console</FONT></P>
-			<OL TYPE=A>
-				<LI><P><FONT COLOR="#800000">TAB = The wonderkey</FONT></P>
-				<LI><P><FONT COLOR="#800000">Locate</FONT></P>
-				<LI><P><FONT COLOR="#800000">Startx</FONT></P>
-			</OL>
+			<P>Help, it's not just a classic Beatles song, it's probably what
+			your thinking the Author is in need of but anywho! If you in a
+			boat, no paddle, up a creek and sinking fast this would be your
+			catch cry. Never fear because the Man is here!</P>
+		</OL>
+		<H2>Who's the Man?</H2>
+		<OL TYPE=i>
+			<P>No, it's not a bird, or a plane and you can count yourself
+			lucky it isn't a paperclip either! It's a command and a might
+			powerful one at that. Typing <B>man </B><SPAN STYLE="font-weight: medium">(The
+			manual pages) </SPAN>followed by a keyword will result in a
+			plethora of information for most commands and key files in Linux.
+			You may want to try finding out more about <B>cat</B> and <B>echo</B>
+			so type <B>man cat</B> or <B>man echo</B>. This is usually the
+			first port of call so when you get stuck try man first and you may
+			find your answer.</P>
+		</OL>
+		<H2>What's up Doc?</H2>
+		<OL TYPE=i>
+			<P><FONT COLOR="#000000">If it's a step by step guide on
+			implementing something a HOW-TO is your answer. <A HREF="http://www.tldp.org/">The
+			Linux Documentation Project</A> is another fine resource of
+			information on a world of topics. Most distributions will
+			prepackage the whole archive of <A HREF="http://www.tldp.org/docs.html#howto">HOW-TO's</A>
+			in it's install but being a hefty 70MB we don't consider it to be
+			minimalist. If you want to download the whole archive, Go nuts!
+			Keep in mind you may never refer to all of the documents (Another
+			reason we don't consider it minimalist). </FONT>
+			</P>
+		</OL>
+		<H2><FONT COLOR="#000000">Do the google!</FONT></H2>
+		<OL TYPE=i>
+			<P><FONT COLOR="#000000">Telling someone to &ldquo;Google it!&rdquo;
+			these days is almost as popular as telling them to RTFM (Read the
+			&ldquo;Friendly!&rdquo; Manual) and why wouldn't you? With the
+			combined knowledge of several Billion people at your fingertips
+			and the power of a searching tool that does some of the work for
+			you, I'm sure that you'll be able to find at least one page on the
+			subject.</FONT></P>
+			<P><FONT COLOR="#800000"><FONT COLOR="#000000"><A HREF="http://www.google.com.au/">Google</A>
+			is also completely Linux friendly. It has a Linux interface that
+			has filtered results. Just point your browser at any googling
+			mirror and add a </FONT><A HREF="http://www.google.com.au/linux">/linux</A><FONT COLOR="#000000">.</FONT></FONT></P>
+		</OL>
+		<H2>Hit the forums</H2>
+		<OL TYPE=i>
+			<P><FONT COLOR="#800000"><FONT COLOR="#000000">When push comes to
+			shove you can always ask an expert! There are literally thousands
+			of people just waiting to give you their opinion, some of them are
+			even worth listening to! Most of the ones worth listening to are
+			on the forums. The Official</FONT> <A HREF="http://atomicl.berlios.de/phpBB2/">Atomic
+			Linux Forums</A> <FONT COLOR="#000000">are always a good start.
+			There are also many others, some of note include JustLinux and </FONT></FONT>
+			</P>
 		</OL>
 	</OL>
-	<LI><P><FONT COLOR="#800000">Ok if you've read this far then let me
-	take another 10mins</FONT></P>
+	<H2>What happened to my &lt;insert device here&gt;?</H2>
 	<OL TYPE=a>
-		<LI><P><FONT COLOR="#800000">HELP!</FONT></P>
-		<OL TYPE=i>
-			<LI><P><FONT COLOR="#800000">Who da Man?</FONT></P>
-			<LI><P><FONT COLOR="#800000">Doc's</FONT></P>
-			<LI><P><FONT COLOR="#800000">Do the google!</FONT></P>
-			<LI><P><FONT COLOR="#800000">Hit the forums</FONT></P>
-		</OL>
-		<LI><P><FONT COLOR="#800000">What happened to my &lt;Insert device
-		here&gt; (The Filesystem)</FONT></P>
-		<OL TYPE=i>
-			<LI><P><FONT COLOR="#800000">CDROM</FONT></P>
-			<LI><P><FONT COLOR="#800000">Floppy A: or B:</FONT></P>
-			<LI><P><FONT COLOR="#800000">Printer or scanner</FONT></P>
-			<LI><P><FONT COLOR="#800000">USB</FONT></P>
-		</OL>
-		<LI><P><FONT COLOR="#800000">Where do you want to go next</FONT></P>
+		<P><FONT COLOR="#000000">By now we're able to navigate the system
+		and get help if needed. It's now time to find devices and how to
+		use them. Unix like systems don't hide the devices away from the
+		user, there are all there ready to be found right underneath our
+		noses.</FONT></P>
+		<P><FONT COLOR="#000000">The directory structure that you're
+		looking at is called <A HREF="http://www.pathname.com/fhs/">Filesystem
+		Hierarchy Standard</A>. Everything in the system can be accessed
+		through the file tree. Yes, Everything! From your normal files and
+		directories, to all your devices attached to the system and even
+		the code the kernel is currently processing. Let me quickly
+		demonstrate the power of this filesystem, <B>cat /proc/cpuinfo </B><SPAN STYLE="font-weight: medium">and
+		you should be presented with detailed information about the current
+		status of your CPU(S). You can try some others, I'll just keep
+		rambling and you can catch up to me later, Just don't <B>cat
+		/proc/kcore</B>. Don't say I didn't warn you!</SPAN></FONT></P>
+		<P STYLE="font-weight: medium"><FONT COLOR="#000000">First lets
+		find your CD devices. Devices are found under the /dev directory.
+		For example the physical link to your primary hard drive is
+		represented by /dev/hda and the first logical partition on that
+		hard drive is /dev/hda1. It's not rocket science! A standard
+		convention is to link /dev/cdrom to the first cdrom drive found on
+		the system and is nearly always a link to /dev/cdroms/cdrom0. Now
+		that we've located the CD-ROM device we can mount it. Come on,
+		focus people! Can we keep our minds out of the gutter. Mounting a
+		device simply means initialise the device and prepare it for data
+		transfer. </FONT>
+		</P>
+		<P STYLE="font-weight: medium"><FONT COLOR="#000000">By typing the
+		command <B>mount -t iso9660 /dev/cdrom /mnt/cdrom </B>we are asking
+		the kernel to recognise the device <I>/dev/cdrom</I><SPAN STYLE="font-style: normal">
+		which has a filesystem of type <I>(-t iso9660)</I> iso9660 to be
+		mounted in the filesystem at the point <I>/mnt/cdrom</I>. In
+		english that means make the files on my cdrom readable from the
+		/mnt/cdrom directory. Ensuing that you have a cdrom in the drive
+		this command should execute without error. When we're finished
+		reading (/writing) to a filesystem we also need to unmount it, it's
+		like putting our toys away once we're finished playing with them.
+		Because it's already mounted we can be lazy and get away with
+		typing <B>umount /mnt/cdrom</B> and as long as it isn't in use
+		(Including if you are currently in the directory) the filesystem
+		will be unmounted. There are some workarounds for stubborn mounts
+		and failed hardware without cutting the power but to find out more
+		just <B>man mount</B>.</SPAN></FONT></P>
+		<P STYLE="font-style: normal; font-weight: medium"><FONT COLOR="#000000">For
+		common and regularly mounted filesystems there is a file you can
+		edit that will help cut down some time and also allow normal (Non
+		root) users to mount the filesystem. Fire up a text editor and edit
+		the fstab (File System table), nano /etc/fstab. You should be
+		presented with a text config file that resembles</FONT></P>
+		<LI><P><FONT COLOR="#800000">Where do you want to go next?</FONT></P>
 		<OL TYPE=i>
 			<LI><P><FONT COLOR="#800000">Installing programs</FONT></P>
 			<OL TYPE=A>
 				<LI><P><FONT COLOR="#800000">Linux is about choice</FONT></P>
 				<LI><P><FONT COLOR="#800000">What's installed</FONT></P>
-				<LI><P><FONT COLOR="#800000">What's not. ie. Office, Media
-				player, Web browser, etc.</FONT></P>
-				<LI><P><FONT COLOR="#800000">How to find programs, apps and code.</FONT></P>
+				<LI><P><FONT COLOR="#800000">What's not i.e. Office, media
+				player, Web browser ...etc</FONT></P>
+				<LI><P><FONT COLOR="#800000">How to find programs &amp; apps &amp;
+				code.</FONT></P>
 			</OL>
-			<LI><P><FONT COLOR="#800000">Configuring the system for your
-			needs.</FONT></P>
+			<LI><P><FONT COLOR="#800000">Configuring the system for your needs</FONT></P>
 			<OL TYPE=A>
 				<LI><P><FONT COLOR="#800000">Examples of what can be done</FONT></P>
 				<LI><P><FONT COLOR="#800000">How to make that a reality</FONT></P>
@@ -63,11 +255,11 @@
 	</OL>
 	<LI><P><FONT COLOR="#800000">Conclusion</FONT></P>
 	<OL TYPE=a>
-		<LI><P><FONT COLOR="#800000">Choice = endless posssibility</FONT></P>
-		<LI><P><FONT COLOR="#800000">limited only by your imagination</FONT></P>
+		<LI><P><FONT COLOR="#800000">Choice = endless possibility</FONT></P>
+		<LI><P><FONT COLOR="#800000">Limited only by your imagination.</FONT></P>
 		<OL TYPE=i>
-			<LI><P><FONT COLOR="#800000">even if your not a programmer chances
-			are some1 has done it before</FONT></P>
+			<LI><P><FONT COLOR="#800000">Even if your not a programmer chances
+			are some1 has done it before.</FONT></P>
 		</OL>
 		<LI><P><FONT COLOR="#800000">Feedback</FONT></P>
 		<LI><P><FONT COLOR="#800000">Enjoy!</FONT></P>
