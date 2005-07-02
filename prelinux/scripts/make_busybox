@@ -1,7 +1,13 @@
 #!/bin/sh
 
-# Set the tool prefix... we should have our own tools in the xcc directory.
-toolprefix=${PWD}/xcc/
+. root/etc/prelinux.d/functions.sh
+
+# Create our own scratch directory.
+ebegin "Creating/cleaning workspace"
+rm -fr tmp && mkdir tmp
+eend $?
+
+export PORTAGE_TMPDIR=$( pwd )/tmp
 
 # What arch are we building for again?
 arch=${TARGET%%-*}
@@ -21,17 +27,11 @@ busybox_workdir=${PORTAGE_TMPDIR}/portage/${busybox_version#*/}/work
 busybox_srcdir=${busybox_workdir}/busybox-${busybox_official_version}
 busybox_config_file=${busybox_srcdir}/.config
 
-if [ -d "$busybox_workdir" ]; then
-	ebegin "Cleaning working directory"
-	rm -fr "$busybox_workdir"
-	eend $?
-fi
-
 einfo "Using $busybox_version ($busybox_ebuild)"
 
 # Okay... we have our newest package.  Let's go.
 ebegin "Unpacking sys-apps/busybox for ${TARGET}"
-USE=static ebuild $busybox_ebuild unpack
+USE=static ${USE_SUDO} ebuild $busybox_ebuild unpack && ${USE_SUDO} chown -R ${UID} tmp
 status=$?
 eend $status
 [ "$status" != 0 ] && exit $status
@@ -39,6 +39,7 @@ echo ''
 
 if [ ! -d "$busybox_srcdir" ]; then
 	eerror "WORKDIR invalid... this shouldn't happen!"
+	eerror "$busybox_srcdir does not exist!"
 	exit 1
 fi
 
@@ -48,13 +49,13 @@ busybox_config_set () {
 	ebegin "  Setting $1 = $2"
 
 	if grep -q "$1" ${busybox_config_file}; then
-		sed -i.old -e 's/^.*'"$1"'.*$/'"$1"'='"$2"'/' ${busybox_config_file}
+		sed -i.old -e 's|^.*'"$1"'.*$|'"$1"'='"$2"'|' ${busybox_config_file}
 		eend $?
 	else
 		# Add after $3 :-)
 		addafter=$( grep "$3" ${busybox_config_file} )
 		einfo "    adding after ${addafter}"
-		sed -i.old -e 's/^'"$addafter"'$/'"$addafter"'\n'"$1"="$2"/ ${busybox_config_file}
+		sed -i.old -e 's|^'"$addafter"'$|'"$addafter"'\n'"$1"="$2"'|' ${busybox_config_file}
 		eend $?
 	fi
 	rm -f ${busybox_config_file}.old
@@ -63,12 +64,16 @@ busybox_config_set () {
 # Right... Configure some options
 einfo "Setting up compile options for busybox"
 busybox_config_set USING_CROSS_COMPILER "y"
-busybox_config_set CROSS_COMPILER_PREFIX "\"${toolprefix}\"" USING_CROSS_COMPILER
+busybox_config_set CROSS_COMPILER_PREFIX "\"$( pwd )/xcc/\"" USING_CROSS_COMPILER
 busybox_config_set EXTRA_CFLAGS_OPTIONS "\"${TARGET_CFLAGS}\""
 ebegin "Running 'make oldconfig'"
 make -C ${busybox_srcdir} oldconfig < /dev/null > /dev/null
 eend $?
 echo ''
+
+ebegin "Starting menuconfig..."
+make -C ${busybox_srcdir} menuconfig
+eend $?
 
 # Now, go compile it :-)
 ebegin "Building sys-apps/busybox for ${TARGET}"
@@ -79,14 +84,7 @@ eend $status
 
 # Okay... grab the busybox binary... and stick that in our target.
 ebegin "Copying our compiled busybox binary"
-cp ${busybox_srcdir}/busybox root/bin
-status=$?
-eend $?
-[ "$status" != 0 ] && exit $status
-
-# Clean up
-ebegin "Cleaning the work directory"
-rm -fr ${busybox_workdir}
+mkdir root/.static && cp ${busybox_srcdir}/busybox root/.static
 status=$?
 eend $?
 [ "$status" != 0 ] && exit $status

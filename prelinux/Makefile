@@ -1,9 +1,20 @@
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.2 2005/07/02 05:38:52 sjlongland Exp $
+
 .PHONY:	all initramfs modules
 
 # Config options
+TARGET=i386-atomic-linux-uclibc
 TYPE=bzImage
 MAKEOPTS=
 MAKEDEV=/usr/sbin/MAKEDEV
+
+# Use SUDO for compiling busybox and making device nodes, etc.
+# Comment out to disable
+USE_SUDO=sudo
+
+# Allow customisation of BusyBox:  Runs menuconfig so that you can
+# fine tune compilation options.
+CUSTOMISE_BUSYBOX=1
 
 #------------------------------------------------------------------------------#
 
@@ -22,10 +33,17 @@ prelinux:	linux linux/$(kernel)
 	cp linux/$(kernel) prelinux
 
 xcc:	scripts/make_xcc
-	sh scripts/make_xcc
+	TARGET=$(TARGET) sh scripts/make_xcc
 
-root/bin/busybox:	scripts/make_busybox	xcc
-	sh scripts/make_busybox
+root/init:	root/etc/prelinux.d/init.sh
+	cd root ; ln -s etc/prelinux.d/init.sh init
+
+root/.static/busybox:	scripts/make_busybox	xcc
+	@echo make_busybox
+	@TARGET=$(TARGET) \
+		USE_SUDO=$(USE_SUDO) \
+		CUSTOMISE_BUSYBOX=$(CUSTOMISE_BUSYBOX)\
+			sh scripts/make_busybox
 
 linux/arch/i386/boot/bzImage: initramfs
 	$(MAKE) -C linux $(MAKEOPTS) bzImage CROSS_COMPILE=$(shell pwd)/xcc/
@@ -47,7 +65,7 @@ initramfs/dev:
 	( cd initramfs/dev ; $(MAKEDEV) generic-$(arch) ) || \
 		( rmdir initramfs/dev && exit 1 )
 
-initramfs: root/bin/busybox initramfs/lib/modules linux/System.map initramfs/dev
+initramfs: root/.static/busybox initramfs/lib/modules linux/System.map initramfs/dev
 	( cd root ; find . | cpio -pv ../initramfs )
 
 # User-provided files.
