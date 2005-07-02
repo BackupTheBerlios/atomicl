@@ -1,0 +1,94 @@
+#!/bin/sh
+
+# Set the tool prefix... we should have our own tools in the xcc directory.
+toolprefix=${PWD}/xcc/
+
+# What arch are we building for again?
+arch=${TARGET%%-*}
+
+# mips64 == mips :-)  Likewise for sparc64
+[ "$arch" = "mips64" ] && arch=mips
+[ "$arch" = "sparc64" ] && arch=sparc
+
+# Right... what version of busybox do we want to use?
+busybox_version=$( portageq best_visible / sys-apps/busybox )
+busybox_official_version=${busybox_version#*busybox-}
+busybox_official_version=${busybox_official_version%-*}
+busybox_ebuild=/usr/portage/${busybox_version%-*-*}/${busybox_version#*/}.ebuild
+
+# Work directory and config file location
+busybox_workdir=${PORTAGE_TMPDIR}/portage/${busybox_version#*/}/work
+busybox_srcdir=${busybox_workdir}/busybox-${busybox_official_version}
+busybox_config_file=${busybox_srcdir}/.config
+
+if [ -d "$busybox_workdir" ]; then
+	ebegin "Cleaning working directory"
+	rm -fr "$busybox_workdir"
+	eend $?
+fi
+
+einfo "Using $busybox_version ($busybox_ebuild)"
+
+# Okay... we have our newest package.  Let's go.
+ebegin "Unpacking sys-apps/busybox for ${TARGET}"
+USE=static ebuild $busybox_ebuild unpack
+status=$?
+eend $status
+[ "$status" != 0 ] && exit $status
+echo ''
+
+if [ ! -d "$busybox_srcdir" ]; then
+	eerror "WORKDIR invalid... this shouldn't happen!"
+	exit 1
+fi
+
+# Helper function -- set config option
+busybox_config_set () {
+	
+	ebegin "  Setting $1 = $2"
+
+	if grep -q "$1" ${busybox_config_file}; then
+		sed -i.old -e 's/^.*'"$1"'.*$/'"$1"'='"$2"'/' ${busybox_config_file}
+		eend $?
+	else
+		# Add after $3 :-)
+		addafter=$( grep "$3" ${busybox_config_file} )
+		einfo "    adding after ${addafter}"
+		sed -i.old -e 's/^'"$addafter"'$/'"$addafter"'\n'"$1"="$2"/ ${busybox_config_file}
+		eend $?
+	fi
+	rm -f ${busybox_config_file}.old
+}
+
+# Right... Configure some options
+einfo "Setting up compile options for busybox"
+busybox_config_set USING_CROSS_COMPILER "y"
+busybox_config_set CROSS_COMPILER_PREFIX "\"${toolprefix}\"" USING_CROSS_COMPILER
+busybox_config_set EXTRA_CFLAGS_OPTIONS "\"${TARGET_CFLAGS}\""
+ebegin "Running 'make oldconfig'"
+make -C ${busybox_srcdir} oldconfig < /dev/null > /dev/null
+eend $?
+echo ''
+
+# Now, go compile it :-)
+ebegin "Building sys-apps/busybox for ${TARGET}"
+make -C ${busybox_srcdir}
+status=$?
+eend $status
+[ "$status" != 0 ] && exit $status
+
+# Okay... grab the busybox binary... and stick that in our target.
+ebegin "Copying our compiled busybox binary"
+cp ${busybox_srcdir}/busybox root/bin
+status=$?
+eend $?
+[ "$status" != 0 ] && exit $status
+
+# Clean up
+ebegin "Cleaning the work directory"
+rm -fr ${busybox_workdir}
+status=$?
+eend $?
+[ "$status" != 0 ] && exit $status
+
+exit 0

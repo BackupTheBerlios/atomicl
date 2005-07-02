@@ -1,0 +1,13 @@
+#!/bin/ash
+
+. /etc/prelinux.d/functions.sh
+
+if [ -f /var/sys/cmdline/telnet ]; then
+	if [ ! -f /var/sys/.net-up ]; then
+		sh /etc/prelinux.d/init-net.sh
+	fi
+
+	ebegin "Starting a telnet daemon"
+	telnetd
+	eend $?
+fi

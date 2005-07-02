@@ -1,0 +1,88 @@
+#!/bin/sh
+
+. root/etc/prelinux.d/functions.sh
+
+tool_present () {
+	which "$1" >&/dev/null
+	return $?
+}
+
+check_tools () {
+	[ -d xcc ] || mkdir xcc
+	einfo "  cross-compile toolchain for ${TARGET}"
+	for tool in ar as ld strip nm objcopy \
+			objdump size strings addr2line gcc g++; do
+
+		if [ -e xcc/${tool} ]; then
+			rm -f xcc/${tool}
+		fi
+
+		ebegin "    ${toolprefix}${tool}"
+		if tool_present "${toolprefix}${tool}"; then
+			ln -s $( which "${toolprefix}${tool}" ) xcc/${tool}
+			eend $?
+		else
+			if [ $crossdev_present = 1 ]; then
+				build_toolchain=1
+				ewarn "      not found.  I'll build it shortly."
+				eend 1
+			else
+				eend 1
+				eerror "I need a compiler for this target if I'm to"
+				eerror "build a kernel & userland for it.  Please"
+				eerror "build a cross-compiler for ${TARGET} first"
+				eerror "before continuing."
+				rm -fr xcc
+				exit 1
+			fi
+		fi
+	done
+	echo ''
+	return ${build_toolchain}
+}
+
+if [ -z "${TARGET}" ]; then
+	eerror "Please set TARGET (e.g. i386-atomic-linux-uclibc,"
+	eerror "i686-pc-linux-gnu, etc...) in your environment variables before"
+	eerror "running config.  Exiting with status 1."
+	exit 1
+fi
+
+if [ "${CROSS_COMPILE}" ]; then
+	toolprefix="${CROSS_COMPILE}"
+elif [ "${NATIVE}" ]; then
+	toolprefix=""
+else
+	toolprefix="${TARGET}-"
+fi
+
+einfo "Target is ${TARGET}.  Checking for necessary tools..."
+echo ''
+einfo "  crossdev"
+if tool_present crossdev; then
+	einfo "    found.  We'll use this to build tools if they're needed. :-)"
+	crossdev_present=1
+else
+	ewarn "    crossdev was not found in your PATH.  This is okay"
+	ewarn "    but it will mean I won't be able to compile cross-compilers"
+	ewarn "    for you in the event that the required tools aren't present."
+	crossdev_present=0
+fi
+echo ''
+
+until check_tools; do
+	ebegin "Running: crossdev -t ${TARGET}"
+	/usr/sbin/crossdev -t ${TARGET}
+	status=$?
+
+	if [ $status = 0 ]; then
+		einfo "Okay, we have our toolchain now. :-)"
+	else
+		eerror "crossdev failed.  This is not good, I'll leave it here"
+	fi
+	eend $?
+
+	[ $status != 0 ] && exit $status
+done
+
+exit 0
