@@ -1,16 +1,19 @@
 #!/bin/ash
-
+# PreLinux Initialisation Script.
+# Copyright (C) 2005 Atomic Linux Project & Gentoo Foundation
+# 
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/root/etc/prelinux.d/init.sh,v 1.3 2005/07/03 03:47:31 sjlongland Exp $
 . /etc/prelinux.d/functions.sh
 
 sleep 1
 clear
 cat /etc/prelinux.d/banner
 sleep 2
-einfo "PreLinux v0.0.1: Pre-boot Linux Distribution Initialisation Environment"
-einfo "          (C) 2005 Atomic Linux Project & Gentoo Foundation"
-einfo "      Distributed under the terms of the GNU PUBLIC LICENCE v2.0"
+einfo "PreLinux: Pre-boot Linux Distribution Initialisation Environment"
+einfo "       (C) 2005 Atomic Linux Project & Gentoo Foundation"
+einfo "   Distributed under the terms of the GNU PUBLIC LICENCE v2.0"
 echo ''
-einfo "Preparing to start Linux"
+einfo "PreLinux Release @RELEASE@"
 sleep 1
 
 ebegin "Mounting /proc"

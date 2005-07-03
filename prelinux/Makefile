@@ -1,7 +1,7 @@
 # PreLinux : Pre-boot Linux Distribution Initialisation Environment
 #
 # Stuart Longland <redhatter@gentoo.org>
-# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.5 2005/07/03 03:01:40 sjlongland Exp $
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.6 2005/07/03 03:47:31 sjlongland Exp $
 .PHONY:	all initramfs modules
 
 # Config options
@@ -28,6 +28,9 @@ kernel=$(shell case "$(TYPE)" in ( elf ) k=vmlinux ;; ( ecoff )	k=vmlinux.ecoff 
 
 # Little shell script to extract the architecture type
 arch=$(shell sh scripts/getarch $(TARGET) )
+
+# PreLinux Revision Tag... This should be updated by cvs
+REVISION='$$Revision: 1.6 $$ $$Date: 2005/07/03 03:47:31 $$'
 
 all:	prelinux
 
@@ -74,6 +77,7 @@ initramfs: root/.static/busybox root/init initramfs/dev
 		ln -s /.static sbin ; \
 		ln -s /.static/busybox .static/ash \
 	) || echo never mind
+	sed -i -e 's/@REVISION@/$(REVISION)/' initramfs/etc/prelinux.d/init.sh
 
 # User-provided files.
 linux:
