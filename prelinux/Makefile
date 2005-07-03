@@ -1,5 +1,7 @@
-# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.3 2005/07/03 01:21:09 sjlongland Exp $
-
+# PreLinux : Pre-boot Linux Distribution Initialisation Environment
+#
+# Stuart Longland <redhatter@gentoo.org>
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.4 2005/07/03 02:47:44 sjlongland Exp $
 .PHONY:	all initramfs modules
 
 # Config options
@@ -45,28 +47,33 @@ root/.static/busybox:	scripts/make_busybox	xcc
 		CUSTOMISE_BUSYBOX=$(CUSTOMISE_BUSYBOX)\
 			sh scripts/make_busybox
 
-linux/arch/i386/boot/bzImage: initramfs
+linux/arch/i386/boot/bzImage: initramfs linux/vmlinux
 	$(MAKE) -C linux $(MAKEOPTS) bzImage CROSS_COMPILE=$(shell pwd)/xcc/
 
+# Generating the vmlinux file... Note that we call `make vmlinux` twice here
+# The first time is to generate the System.map file needed for producing the
+# module dependancies.  This step is skipped if the linux/System.map file
+# already exists.
 linux/vmlinux: initramfs
-	$(MAKE) -C linux $(MAKEOPTS) vmlinux CROSS_COMPILE=$(shell pwd)/xcc/
-
-# Produce a System.map file... Needed for module dependancies.
-linux/System.map:
-	$(MAKE) -C linux $(MAKEOPTS) vmlinux CROSS_COMPILE=$(shell pwd)/xcc/
-	rm linux/vmlinux
-
-initramfs/lib/modules:	linux/System.map 
 	$(MAKE) -C linux $(MAKEOPTS) modules CROSS_COMPILE=$(shell pwd)/xcc/
+	[ -f linux/System.map ] || $(MAKE) -C linux $(MAKEOPTS) vmlinux \
+		CROSS_COMPILE=$(shell pwd)/xcc/
 	$(MAKE) -C linux modules_install INSTALL_MOD_PATH=$(shell pwd)/initramfs
+	$(MAKE) -C linux $(MAKEOPTS) vmlinux CROSS_COMPILE=$(shell pwd)/xcc/
 
 initramfs/dev:
-	mkdir initramfs/dev
-	( cd initramfs/dev ; $(MAKEDEV) generic-$(arch) ) || \
+	mkdir -p initramfs/dev
+	( cd initramfs/dev ; $(USE_SUDO) $(MAKEDEV) generic-$(arch) ) || \
 		( rmdir initramfs/dev && exit 1 )
+	$(USE_SUDO) chown -R $(UID) initramfs/dev
 
-initramfs: root/.static/busybox initramfs/lib/modules linux/System.map initramfs/dev
+initramfs: root/.static/busybox root/init initramfs/dev
 	( cd root ; find . | cpio -pv ../initramfs )
+	( cd initramfs ; \
+		ln -s .static bin ; \
+		ln -s .static sbin ; \
+		ln -s .static/busybox .static/ash \
+	)
 
 # User-provided files.
 linux:
