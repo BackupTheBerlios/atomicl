@@ -27,7 +27,7 @@ eend $?
 
 load_kparams
 
-ash /etc/prelinux.d/probe.sh
+/etc/prelinux.d/probe.sh
 
 if [ -f /var/sys/cmdline/setup ]; then
         einfo "Running setup script"
@@ -35,20 +35,20 @@ if [ -f /var/sys/cmdline/setup ]; then
 
         fetch /tmp "${script}"
 	if [ -f /tmp/${script##*/} ]; then
-        	exec /bin/sh /tmp/${script##*/}
+        	exec ash /tmp/${script##*/}
 	else
 		eerror "Failed to download setup script ${script}"
 		eerror "This shouldn't happen.  Dropping you to a shell."
 		eerror "Type \`exec $0\` to try again."
-		exec /bin/sh
+		exec ash
 	fi
 fi
 
 if [ -f /var/sys/cmdline/noinit ]; then
 	einfo "Dropping you to a bare shell without init."
 	einfo "If you want more shells, try \`exec /sbin/init\`."
-	exec /bin/sh --login -i
+	exec ash --login -i
 fi
 
 einfo "No setup commandline option given.  Starting up in stand-alone mode"
-exec /sbin/init
+exec init
