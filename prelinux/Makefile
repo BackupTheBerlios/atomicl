@@ -1,7 +1,7 @@
 # PreLinux : Pre-boot Linux Distribution Initialisation Environment
 #
 # Stuart Longland <redhatter@gentoo.org>
-# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.4 2005/07/03 02:47:44 sjlongland Exp $
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.5 2005/07/03 03:01:40 sjlongland Exp $
 .PHONY:	all initramfs modules
 
 # Config options
@@ -70,10 +70,10 @@ initramfs/dev:
 initramfs: root/.static/busybox root/init initramfs/dev
 	( cd root ; find . | cpio -pv ../initramfs )
 	( cd initramfs ; \
-		ln -s .static bin ; \
-		ln -s .static sbin ; \
-		ln -s .static/busybox .static/ash \
-	)
+		ln -s /.static bin ; \
+		ln -s /.static sbin ; \
+		ln -s /.static/busybox .static/ash \
+	) || echo never mind
 
 # User-provided files.
 linux:
