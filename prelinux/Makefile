@@ -1,4 +1,4 @@
-# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.2 2005/07/02 05:38:52 sjlongland Exp $
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/Makefile,v 1.3 2005/07/03 01:21:09 sjlongland Exp $
 
 .PHONY:	all initramfs modules
 
