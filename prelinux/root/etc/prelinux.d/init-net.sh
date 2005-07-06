@@ -8,14 +8,18 @@ if [ ! -f /var/sys/.probed ]; then
 	sh /etc/prelinux.d/probe.sh
 fi
 
+# Create links to network utils if not already present.
+[ -e /sbin/ifconfig ] || busybox --install ifconfig
+[ -e /sbin/route ] || busybox --install route
+
 # Function for setting up single ethernet device
 setup () {
 	device=$1
 
 	if [ -f /var/sys/cmdline/$device ]; then
 		config=$( cat /var/sys/cmdline/${device})
-		ip=${config#/*}
-		mask=${config%*/}
+		ip=${config%/*}
+		mask=${config#*/}
 
 		if [ "$config" = "dhcp" ]; then
 			ebegin "  Setting up ${device} via DHCP"
@@ -23,7 +27,7 @@ setup () {
 			udhcpc -b -i ${device}
 			eend $?
 		else
-			ebegin "  Setting up ${device} via static config (${ip}/${mask}"
+			ebegin "  Setting up ${device} via static config (${ip}/${mask})"
 			ifconfig ${device} inet ${ip} netmask ${mask} up
 			eend $?
 		fi
@@ -38,7 +42,7 @@ for device in /sys/class/net/*; do
 			;;
 		lo)
 			ebegin "  Setting up loopback device"
-			ifconfig lo inet 127.0.0.1 netmask 255.0.0.0
+			ifconfig lo inet 127.0.0.1 netmask 255.0.0.0 up
 			eend $?
 			;;
 	esac

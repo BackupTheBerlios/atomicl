@@ -2,6 +2,8 @@
 
 . /etc/prelinux.d/functions.sh
 
+/.static/busybox --install
+
 if [ -f /var/sys/cmdline/telnet ]; then
 	if [ ! -f /var/sys/.net-up ]; then
 		sh /etc/prelinux.d/init-net.sh

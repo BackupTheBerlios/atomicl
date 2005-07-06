@@ -2,18 +2,18 @@
 # PreLinux Initialisation Script.
 # Copyright (C) 2005 Atomic Linux Project & Gentoo Foundation
 # 
-# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/root/etc/prelinux.d/init.sh,v 1.3 2005/07/03 03:47:31 sjlongland Exp $
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/root/etc/prelinux.d/init.sh,v 1.4 2005/07/06 01:18:23 sjlongland Exp $
 . /etc/prelinux.d/functions.sh
 
 sleep 1
 clear
 cat /etc/prelinux.d/banner
 sleep 2
-einfo "PreLinux: Pre-boot Linux Distribution Initialisation Environment"
-einfo "       (C) 2005 Atomic Linux Project & Gentoo Foundation"
-einfo "   Distributed under the terms of the GNU PUBLIC LICENCE v2.0"
+einfo 'PreLinux: Pre-boot Linux Distribution Initialisation Environment'
+einfo '       (C) 2005 Atomic Linux Project & Gentoo Foundation'
+einfo '   Distributed under the terms of the GNU PUBLIC LICENCE v2.0'
 echo ''
-einfo "PreLinux Release @RELEASE@"
+einfo 'PreLinux Release @REVISION@'
 sleep 1
 
 ebegin "Mounting /proc"
@@ -37,14 +37,12 @@ if [ -f /var/sys/cmdline/setup ]; then
         script="$( cat /var/sys/cmdline/setup )"
 
         fetch /tmp "${script}"
-	if [ -f /tmp/${script##*/} ]; then
-        	exec ash /tmp/${script##*/}
-	else
-		eerror "Failed to download setup script ${script}"
-		eerror "This shouldn't happen.  Dropping you to a shell."
-		eerror "Type \`exec $0\` to try again."
-		exec ash
-	fi
+        exec ash /tmp/${script##*/}
+
+	eerror "Failed to download setup script ${script}"
+	eerror "This shouldn't happen.  Dropping you to a shell."
+	eerror "Type \`exec $0\` to try again."
+	exec ash
 fi
 
 if [ -f /var/sys/cmdline/noinit ]; then

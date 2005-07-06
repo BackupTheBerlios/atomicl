@@ -1,4 +1,7 @@
 #!/bin/ash
+# Hardware Probing Script
+# Attempts to load each module for storage and network.
+# $Header: /home/xubuntu/berlios_backup/github/tmp-cvs/atomicl/Repository/prelinux/root/etc/prelinux.d/probe.sh,v 1.2 2005/07/06 01:18:23 sjlongland Exp $
 
 if [ -f /var/sys/.probed ]; then
 	exit 0
@@ -23,16 +26,23 @@ probe_module () {
 
 probe_modules () {
 	fail=0
+	success=0
 	echo -en "\033[s"
 	for module in $*; do
 		echo -en "\033[u"
 		if probe_module $module; then
 			echo -n ''
+			success=$(( $success + 1 ))
 		else
-			fail=1
+			fail=$(( $fail + 1 ))
 		fi
 	done
-	return $fail
+	
+	echo -en "\033[u"
+	einfo "  $# modules probed, $success loaded successfully, $fail failed."
+	
+	[ $fail = 0 ]
+	return $?
 }
 
 modbase=/lib/modules/$( uname -r )
@@ -79,6 +89,18 @@ eend $?
 #probe_modules $( find ${modules}/kernel/drivers/pcmcia -name \*.ko )
 #eend $?
 # TODO: Full PCMCIA support (need cardmgr)
+
+# Probe RAID devices
+clear
+ebegin "Probing software RAID devices"
+probe_modules $( find ${modbase}/kernel/drivers/md -name \*.ko )
+eend $?
+
+# Filesystem Support
+clear
+ebegin "Loading filesystem drivers"
+probe_modules ext2 ext3 fat isofs jfs minix nfs nfsd reisefs squashfs udf vfat xfs
+eend $?
 
 clear
 
